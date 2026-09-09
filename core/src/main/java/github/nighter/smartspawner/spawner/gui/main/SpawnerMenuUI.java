@@ -502,7 +502,7 @@ public class SpawnerMenuUI {
         if (usedPlaceholders.contains("total_sell_price")) {
             // Always recalculate if dirty to ensure immediate display (0s delay)
             if (spawner.isSellValueDirty()) {
-                spawner.recalculateSellValue();
+                spawner.recalculateSellValue(player);
             }
             double totalSellPrice = spawner.getAccumulatedSellValue();
             placeholders.put("total_sell_price", languageManager.formatNumber(totalSellPrice));

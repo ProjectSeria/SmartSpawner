@@ -130,7 +130,7 @@ public class SpawnerSellConfirmUI {
     private void populateSellConfirmGui(Inventory gui, Player player, SpawnerData spawner,
                                         boolean collectExp, GuiLayout layout) {
         // OPTIMIZATION: Create placeholders once and reuse for all buttons
-        Map<String, String> placeholders = createPlaceholders(spawner, collectExp);
+        Map<String, String> placeholders = createPlaceholders(player, spawner, collectExp);
 
         if (layout == null) {
             plugin.getLogger().warning("Sell confirm layout not loaded, using empty GUI");
@@ -278,7 +278,7 @@ public class SpawnerSellConfirmUI {
         return components;
     }
 
-    private Map<String, String> createPlaceholders(SpawnerData spawner, boolean collectExp) {
+    private Map<String, String> createPlaceholders(Player player, SpawnerData spawner, boolean collectExp) {
         // OPTIMIZATION: Calculate initial capacity to avoid HashMap resizing
         Map<String, String> placeholders = new HashMap<>(12);
 
@@ -301,7 +301,7 @@ public class SpawnerSellConfirmUI {
 
         // OPTIMIZATION: Check sell value dirty only once
         if (spawner.isSellValueDirty()) {
-            spawner.recalculateSellValue();
+            spawner.recalculateSellValue(player);
         }
 
         // OPTIMIZATION: Get all values in single pass

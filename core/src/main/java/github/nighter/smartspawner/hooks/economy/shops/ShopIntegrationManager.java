@@ -6,6 +6,7 @@ import github.nighter.smartspawner.hooks.economy.shops.providers.economyshopgui.
 import github.nighter.smartspawner.hooks.economy.shops.providers.economyshopgui.ESGUICompatibilityHandler;
 import github.nighter.smartspawner.hooks.economy.shops.providers.shopguiplus.ShopGuiPlusProvider;
 import github.nighter.smartspawner.hooks.economy.shops.providers.shopguiplus.SpawnerHook;
+import github.nighter.smartspawner.hooks.economy.shops.providers.ultimateshop.UltimateShopProvider;
 import github.nighter.smartspawner.hooks.economy.shops.providers.zshop.ZShopProvider;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
@@ -16,19 +17,27 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @RequiredArgsConstructor
-public class ShopIntegrationManager {
+public class ShopIntegrationManager implements org.bukkit.event.Listener {
     private final SmartSpawner plugin;
     private ShopProvider activeProvider;
     private final List<ShopProvider> availableProviders = new ArrayList<>();
     private SpawnerHook spawnerHook = null;
     private ESGUICompatibilityHandler esguiCompatibilityHandler = null;
+    private boolean initializedOnce = false;
+    private boolean listenerRegistered = false;
 
     public void initialize() {
+        if (!listenerRegistered) {
+            plugin.getServer().getPluginManager().registerEvents(this, plugin);
+            listenerRegistered = true;
+        }
+
         availableProviders.clear();
         activeProvider = null;
 
         detectAndRegisterActiveProviders();
         selectActiveProvider();
+        initializedOnce = true;
     }
 
     private void detectAndRegisterActiveProviders() {
@@ -41,10 +50,9 @@ public class ShopIntegrationManager {
         // If a specific shop is configured, only try to load that one
         if (!autoDetect) {
             if (tryRegisterSpecificProvider(configuredShop)) {
-                // plugin.getLogger().info("Successfully loaded configured shop plugin: " + configuredShop);
                 return; // Stop here - we found and loaded the preferred plugin
-            } else {
-                plugin.getLogger().warning("Configured shop plugin '" + configuredShop + "' could not be loaded. Falling back to auto-detection.");
+            } else if (!initializedOnce) {
+                plugin.getLogger().info("Configured shop plugin '" + configuredShop + "' is not enabled yet. Will auto-connect when loaded.");
             }
         }
 
@@ -79,6 +87,10 @@ public class ShopIntegrationManager {
                 }
                 return new ShopGuiPlusProvider(plugin);
             });
+        }
+
+        if (isPluginAvailable("UltimateShop")) {
+            registerProviderIfAvailable("UltimateShop", () -> new UltimateShopProvider(plugin));
         }
 
         // registerProviderIfAvailable("ZShop", () -> new ZShopProvider(plugin));
@@ -119,6 +131,12 @@ public class ShopIntegrationManager {
                         return !availableProviders.isEmpty();
                     }
                     break;
+                case "ultimateshop":
+                    if (isPluginAvailable("UltimateShop")) {
+                        registerProviderIfAvailable("UltimateShop", () -> new UltimateShopProvider(plugin));
+                        return !availableProviders.isEmpty();
+                    }
+                    break;
                 case "zshop":
                     if (isPluginAvailable("ZShop")) {
                         registerProviderIfAvailable("ZShop", () -> new ZShopProvider(plugin));
@@ -134,13 +152,20 @@ public class ShopIntegrationManager {
 
     private boolean isPluginAvailable(String pluginName) {
         Plugin targetPlugin = plugin.getServer().getPluginManager().getPlugin(pluginName);
+        if (targetPlugin == null) {
+            for (Plugin p : plugin.getServer().getPluginManager().getPlugins()) {
+                if (p.getName().equalsIgnoreCase(pluginName)) {
+                    targetPlugin = p;
+                    break;
+                }
+            }
+        }
         return targetPlugin != null && targetPlugin.isEnabled();
     }
 
     private void registerProviderIfAvailable(String providerName, Supplier<ShopProvider> providerSupplier) {
         // If we already have an active provider and we're in single-provider mode, skip
         if (!availableProviders.isEmpty()) {
-            // Already have an active provider; single-provider mode, so skip.
             return;
         }
 
@@ -148,17 +173,19 @@ public class ShopIntegrationManager {
             ShopProvider provider = providerSupplier.get();
             if (provider.isAvailable()) {
                 availableProviders.add(provider);
+            } else if (!initializedOnce) {
+                plugin.getLogger().warning("Shop provider '" + providerName + "' reported it is not available.");
             }
         } catch (NoClassDefFoundError e) {
-            // Provider classes not present (plugin not installed); ignore.
-        } catch (Exception e) {
-            // Provider could not be initialized; ignore.
+            if (!initializedOnce) plugin.getLogger().warning("Shop provider '" + providerName + "' class not found: " + e.getMessage());
+        } catch (Throwable e) {
+            if (!initializedOnce) plugin.getLogger().warning("Could not initialize shop provider '" + providerName + "': " + e.getMessage());
         }
     }
 
     private void selectActiveProvider() {
         if (availableProviders.isEmpty()) {
-            plugin.getLogger().info("No compatible shop plugins found. Shop integration is disabled.");
+            if (!initializedOnce) plugin.getLogger().info("No compatible shop plugins found. Shop integration is disabled.");
             return;
         }
 
@@ -168,14 +195,36 @@ public class ShopIntegrationManager {
     }
 
     public double getPrice(Material material) {
+        return getPrice(material, null);
+    }
+
+    public double getPrice(Material material, org.bukkit.entity.Player player) {
+        if (activeProvider == null && !initializedOnce) {
+            initialize();
+        }
         if (activeProvider == null || material == null) {
             return 0.0;
         }
 
         try {
-            return activeProvider.getSellPrice(material);
+            return activeProvider.getSellPrice(material, player);
         } catch (Exception e) {
             return 0.0;
+        }
+    }
+
+    public double getPrice(Material material, long amount, org.bukkit.entity.Player player) {
+        if (activeProvider == null && !initializedOnce) {
+            initialize();
+        }
+        if (activeProvider == null || material == null || amount <= 0) {
+            return 0.0;
+        }
+
+        try {
+            return activeProvider.getSellPrice(material, amount, player);
+        } catch (Exception e) {
+            return getPrice(material, player) * amount;
         }
     }
 
@@ -184,7 +233,25 @@ public class ShopIntegrationManager {
     }
 
     public boolean hasActiveProvider() {
+        if (activeProvider == null && !initializedOnce) {
+            initialize();
+        }
         return activeProvider != null;
+    }
+
+    @org.bukkit.event.EventHandler
+    public void onPluginEnable(org.bukkit.event.server.PluginEnableEvent event) {
+        if (activeProvider != null) return;
+
+        String pluginName = event.getPlugin().getName();
+        if (pluginName.equalsIgnoreCase("UltimateShop") ||
+            pluginName.equalsIgnoreCase("EconomyShopGUI") ||
+            pluginName.equalsIgnoreCase("EconomyShopGUI-Premium") ||
+            pluginName.equalsIgnoreCase("ShopGUIPlus") ||
+            pluginName.equalsIgnoreCase("zShop")) {
+            plugin.getLogger().info("Shop plugin '" + pluginName + "' enabled. Connecting shop integration...");
+            initialize();
+        }
     }
 
     public void cleanup() {

@@ -41,6 +41,8 @@ public class ItemSpawnerSettingsConfig {
     private final Map<String, ItemDefinition> definitionsByName = new HashMap<>();
     private final Map<String, ItemStack> displayItemsByName = new HashMap<>();
     private final Map<Material, ItemDefinition> defaultDefinitionsByMaterial = new EnumMap<>(Material.class);
+    private final Map<String, Long> namedSpawnDelays = new HashMap<>();
+    private final Map<Material, Long> materialSpawnDelays = new EnumMap<>(Material.class);
     
     public ItemSpawnerSettingsConfig(SmartSpawner plugin) {
         this.plugin = plugin;
@@ -99,6 +101,8 @@ public class ItemSpawnerSettingsConfig {
         definitionsByName.clear();
         displayItemsByName.clear();
         defaultDefinitionsByMaterial.clear();
+        namedSpawnDelays.clear();
+        materialSpawnDelays.clear();
         
         // Parse each item's configuration
         for (String configName : config.getKeys(false)) {
@@ -130,6 +134,7 @@ public class ItemSpawnerSettingsConfig {
             
             // Parse loot data
             parseLootData(material, itemSection);
+            parseSpawnDelay(normalizedName, material, itemSection);
             
             // Add to valid materials set
             validItemSpawnerMaterials.add(material);
@@ -278,6 +283,34 @@ public class ItemSpawnerSettingsConfig {
         return validItemSpawnerMaterials.contains(material);
     }
     
+    private void parseSpawnDelay(String configName, Material material, ConfigurationSection itemSection) {
+        if (!itemSection.contains("spawn_delay")) {
+            return;
+        }
+
+        String delayStr = itemSection.getString("spawn_delay");
+        if (delayStr != null && !delayStr.isBlank()) {
+            long delayTicks = plugin.getTimeFormatter().parseTimeToTicks(delayStr, -1L);
+            if (delayTicks > 0) {
+                namedSpawnDelays.put(configName, delayTicks);
+                materialSpawnDelays.putIfAbsent(material, delayTicks);
+            } else {
+                plugin.getLogger().warning("Invalid spawn_delay '" + delayStr + "' for " + configName + " in " + RESOURCE);
+            }
+        }
+    }
+
+    public Long getSpawnDelay(String configName, Material material) {
+        if (configName != null) {
+            Long delay = namedSpawnDelays.get(SpawnerConfigName.normalize(configName));
+            if (delay != null) return delay;
+        }
+        if (material != null) {
+            return materialSpawnDelays.get(material);
+        }
+        return null;
+    }
+
     /**
      * Get all valid item spawner materials
      */

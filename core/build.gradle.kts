@@ -49,6 +49,7 @@ dependencies {
     compileOnly(libs.minecodes.plots)
     compileOnly(libs.zshop)
     compileOnly(libs.zmenu)
+    compileOnly(libs.ultimateshop)
 
     implementation(libs.griefprevention)
     implementation(libs.lands)

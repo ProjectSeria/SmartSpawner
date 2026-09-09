@@ -109,6 +109,10 @@ allprojects {
                 includeGroup("nl.rutgerkok")
             }
         }
+        maven {
+            name = "repo-lanink-cn"
+            url = uri("https://repo.lanink.cn/repository/maven-public/")
+        }
     }
 
     // Compile, runtime and their test counterparts. `shade` is left unmatched so the shaded jar

@@ -51,6 +51,9 @@ public class SpawnerSettingsConfig {
     private final Map<String, EntitySnapshot> snapshotsByName = new HashMap<>();
     private final Map<EntityType, MobDefinition> defaultDefinitionsByEntity = new EnumMap<>(EntityType.class);
 
+    private final Map<String, Long> namedSpawnDelays = new HashMap<>();
+    private final Map<EntityType, Long> entitySpawnDelays = new EnumMap<>(EntityType.class);
+
     public SpawnerSettingsConfig(SmartSpawner plugin) {
         this.plugin = plugin;
         this.configFile = new File(plugin.getDataFolder(), RESOURCE);
@@ -90,6 +93,8 @@ public class SpawnerSettingsConfig {
         definitionsByName.clear();
         snapshotsByName.clear();
         defaultDefinitionsByEntity.clear();
+        namedSpawnDelays.clear();
+        entitySpawnDelays.clear();
 
         // Parse each mob's configuration
         for (String configName : config.getKeys(false)) {
@@ -123,6 +128,8 @@ public class SpawnerSettingsConfig {
             parseLootData(normalizedName, entitySection);
 
             parseSpawnerDropChance(normalizedName, entityType, entitySection);
+            parseSpawnDelay(normalizedName, entityType, entitySection);
+
             MobDefinition definition = new MobDefinition(normalizedName, entityType,
                     entityLootConfigs.get(normalizedName));
             definitionsByName.put(normalizedName, definition);
@@ -175,6 +182,35 @@ public class SpawnerSettingsConfig {
 
         spawnerDropChances.putIfAbsent(entityType, dropChance);
         namedSpawnerDropChances.put(configName, dropChance);
+    }
+
+    private void parseSpawnDelay(String configName, EntityType entityType,
+                                 ConfigurationSection entitySection) {
+        if (!entitySection.contains("spawn_delay")) {
+            return;
+        }
+
+        String delayStr = entitySection.getString("spawn_delay");
+        if (delayStr != null && !delayStr.isBlank()) {
+            long delayTicks = plugin.getTimeFormatter().parseTimeToTicks(delayStr, -1L);
+            if (delayTicks > 0) {
+                namedSpawnDelays.put(configName, delayTicks);
+                entitySpawnDelays.putIfAbsent(entityType, delayTicks);
+            } else {
+                plugin.getLogger().warning("Invalid spawn_delay '" + delayStr + "' for " + configName + " in " + RESOURCE);
+            }
+        }
+    }
+
+    public Long getSpawnDelay(String configName, EntityType entityType) {
+        if (configName != null) {
+            Long delay = namedSpawnDelays.get(SpawnerConfigName.normalize(configName));
+            if (delay != null) return delay;
+        }
+        if (entityType != null) {
+            return entitySpawnDelays.get(entityType);
+        }
+        return null;
     }
 
     /**

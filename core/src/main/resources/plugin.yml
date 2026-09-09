@@ -11,6 +11,7 @@ softdepend:
   - EconomyShopGUI-Premium
   - ShopGUIPlus
   - zShop
+  - UltimateShop
 
   # Utility/Economy Plugins
   - ExcellentEconomy

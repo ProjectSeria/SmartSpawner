@@ -4,6 +4,7 @@ import github.nighter.smartspawner.SmartSpawner;
 import github.nighter.smartspawner.api.events.SpawnerEggChangeEvent;
 import github.nighter.smartspawner.language.MessageService;
 import github.nighter.smartspawner.spawner.properties.SpawnerData;
+import github.nighter.smartspawner.config.Config;
 import github.nighter.smartspawner.language.LanguageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -57,6 +58,12 @@ public class SpawnEggHandler {
         // Validate parameters
         if (player == null || spawner == null || spawnerData == null || spawnEgg == null) {
             plugin.getLogger().log(Level.WARNING, "Attempted to handle spawn egg use with null parameters");
+            return;
+        }
+
+        // Check if spawner egg type changing is enabled
+        if (!Config.get().isAllowSpawnEggChange()) {
+            messageService.sendMessage(player, "change_type_disabled");
             return;
         }
 

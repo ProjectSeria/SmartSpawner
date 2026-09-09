@@ -156,21 +156,44 @@ public class ItemPriceManager {
     }
 
     public double getPrice(Material material) {
+        return getPrice(material, null);
+    }
+
+    public double getPrice(Material material, org.bukkit.entity.Player player) {
         if (material == null || !economyEnabled) return 0.0;
 
         switch (priceSourceMode) {
             case CUSTOM_ONLY:
                 return getCustomPrice(material);
             case SHOP_ONLY:
-                return getShopPrice(material);
+                return getShopPrice(material, player);
             case CUSTOM_PRIORITY:
                 double customPrice = getCustomPrice(material);
-                return customPrice > 0 ? customPrice : getShopPrice(material);
+                return customPrice > 0 ? customPrice : getShopPrice(material, player);
             case SHOP_PRIORITY:
-                double shopPrice = getShopPrice(material);
+                double shopPrice = getShopPrice(material, player);
                 return shopPrice > 0 ? shopPrice : getCustomPrice(material);
             default:
                 return defaultPrice;
+        }
+    }
+
+    public double getPrice(Material material, long amount, org.bukkit.entity.Player player) {
+        if (material == null || !economyEnabled || amount <= 0) return 0.0;
+
+        switch (priceSourceMode) {
+            case CUSTOM_ONLY:
+                return getCustomPrice(material) * amount;
+            case SHOP_ONLY:
+                return getShopPrice(material, amount, player);
+            case CUSTOM_PRIORITY:
+                double customPrice = getCustomPrice(material);
+                return customPrice > 0 ? customPrice * amount : getShopPrice(material, amount, player);
+            case SHOP_PRIORITY:
+                double shopPrice = getShopPrice(material, amount, player);
+                return shopPrice > 0 ? shopPrice : (getCustomPrice(material) * amount);
+            default:
+                return defaultPrice * amount;
         }
     }
 
@@ -180,8 +203,17 @@ public class ItemPriceManager {
     }
 
     private double getShopPrice(Material material) {
+        return getShopPrice(material, null);
+    }
+
+    private double getShopPrice(Material material, org.bukkit.entity.Player player) {
         if (!economyEnabled || !shopIntegrationEnabled || shopIntegrationManager == null) return 0.0;
-        return shopIntegrationManager.getPrice(material);
+        return shopIntegrationManager.getPrice(material, player);
+    }
+
+    private double getShopPrice(Material material, long amount, org.bukkit.entity.Player player) {
+        if (!economyEnabled || !shopIntegrationEnabled || shopIntegrationManager == null) return 0.0;
+        return shopIntegrationManager.getPrice(material, amount, player);
     }
 
     public void setPrice(Material material, double price) {

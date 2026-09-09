@@ -86,22 +86,19 @@ public class SpawnerSellManager {
             return;
         }
 
-        // Recalculate sell value if the price cache is stale (rare)
-        if (spawner.isSellValueDirty()) {
-            spawner.recalculateSellValue();
-        }
+        // Recalculate sell value using player context to guarantee live shop prices
+        spawner.recalculateSellValue(player);
 
         // Kick all viewers out while the sell is running
         spawnerGuiViewManager.closeAllViewersInventory(spawner);
 
         // Lightweight snapshot – safe because isSelling prevents concurrent inventory changes
         final Map<ItemSignature, Long> itemSnapshot = virtualInv.getConsolidatedItems();
-        final double accumulatedValue = spawner.getAccumulatedSellValue();
         final Location spawnerLocation = spawner.getSpawnerLocation();
 
         SellResult result;
         try {
-            result = calculateSellValue(itemSnapshot, accumulatedValue);
+            result = calculateSellValue(spawner, player, itemSnapshot);
         } catch (Exception e) {
             plugin.getLogger().warning("Sell calculation error for " + player.getName() + ": " + e.getMessage());
             Scheduler.runLocationTask(spawnerLocation, () -> {
@@ -203,17 +200,30 @@ public class SpawnerSellManager {
     }
 
     /**
-     * Calculates the total sell value and records the consolidated item signatures to remove.
-     * Pure computation – no Bukkit API calls, safe to run on an async thread.
+     * Calculates the total sell value and records ONLY sellable item signatures to remove.
+     * Unsellable items (price <= 0) will remain in spawner storage.
      */
-    private SellResult calculateSellValue(Map<ItemSignature, Long> consolidatedItems, double totalValue) {
+    private SellResult calculateSellValue(SpawnerData spawner, Player player, Map<ItemSignature, Long> consolidatedItems) {
         long totalItemsSold = 0;
+        double totalValue = 0.0;
+        Map<ItemSignature, Long> sellableItemsToRemove = new HashMap<>();
+
+        Map<String, Double> priceCache = spawner.createPriceCache(player);
 
         for (Map.Entry<ItemSignature, Long> entry : consolidatedItems.entrySet()) {
-            totalItemsSold += entry.getValue();
+            ItemSignature signature = entry.getKey();
+            Long amount = entry.getValue();
+            if (signature == null || amount == null || amount <= 0) continue;
+
+            double itemBatchPrice = spawner.findItemPrice(signature, amount, priceCache, player);
+            if (itemBatchPrice > 0.0) {
+                totalItemsSold += amount;
+                totalValue += itemBatchPrice;
+                sellableItemsToRemove.put(signature, amount);
+            }
         }
 
-        return new SellResult(totalValue, totalItemsSold, consolidatedItems);
+        return new SellResult(totalValue, totalItemsSold, sellableItemsToRemove);
     }
 
     private List<ItemStack> toApiItemStacks(Map<ItemSignature, Long> items) {

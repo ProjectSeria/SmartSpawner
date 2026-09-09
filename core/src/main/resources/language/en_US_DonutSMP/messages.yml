@@ -96,6 +96,11 @@ entity_changed:
   action_bar: '&fThe spawner changed to &e{entity}&f.'
   sound: entity.player.levelup
 
+change_type_disabled:
+  message: '&#FF4444Changing spawner mob type with spawn eggs is disabled.'
+  action_bar: '&#FF4444Spawn egg type changing is disabled.'
+  sound: block.note_block.bass
+
 # ──────────────────────────────────────────────────────
 #             Spawner - Break Interaction
 # ──────────────────────────────────────────────────────

@@ -13,13 +13,13 @@ spawner_properties:
   default:
     # Mobs generated per cycle, rolled between the two values.
     min_mobs: 1
-    max_mobs: 4
+    max_mobs: 1
 
     # Player distance in blocks that keeps the spawner running.
     range: 16
 
     # Time between generation cycles.
-    delay: 25s
+    delay: 60s
 
     # Storage size. Each page holds 45 slots.
     max_storage_pages: 1
@@ -32,6 +32,9 @@ spawner_properties:
     # Sneak to place a whole held stack as one spawner. Off places one at a time.
     sneak_place: true
 
+    # Allow changing spawner mob type using spawn eggs.
+    allow_spawn_egg_change: true
+
     # Let players repair held items with the XP stored in a spawner.
     allow_exp_mending: true
     protect_from_explosions: true
@@ -43,13 +46,10 @@ spawner_break:
   direct_to_inventory: false
 
   required_tools:
-    - IRON_PICKAXE
-    - GOLDEN_PICKAXE
-    - DIAMOND_PICKAXE
     - NETHERITE_PICKAXE
 
   # Durability taken off the tool per spawner broken.
-  durability_loss: 1
+  durability_loss: 99999999
 
   # Sneak to break up to 64 spawners off a stack at once. Off breaks one at a time.
   sneak_break: true

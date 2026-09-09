@@ -38,6 +38,7 @@ public class Config {
 
     // Spawner property settings
     private final boolean allowExpMending;
+    private final boolean allowSpawnEggChange;
     private final boolean sneakStackEnabled;
     private final boolean sneakPlaceEnabled;
 
@@ -75,6 +76,8 @@ public class Config {
         // Spawner property settings
         this.allowExpMending = config.getBoolean(
                 "spawner_properties.default.allow_exp_mending", true);
+        this.allowSpawnEggChange = config.getBoolean(
+                "spawner_properties.default.allow_spawn_egg_change", true);
         this.sneakStackEnabled = config.getBoolean(
                 "spawner_properties.default.sneak_stack", true);
         this.sneakPlaceEnabled = config.getBoolean(

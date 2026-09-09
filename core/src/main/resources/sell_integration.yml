@@ -8,18 +8,18 @@ enabled: true
 currency: VAULT
 
 # Currency name, EXCELLENTECONOMY only.
-excellenteconomy_currency: money
+excellenteconomy_currency: gins
 
 # Where prices come from: SHOP_ONLY, SHOP_PRIORITY, CUSTOM_ONLY or CUSTOM_PRIORITY.
 price_source_mode: SHOP_PRIORITY
 
 shop_integration:
   enabled: true
-  # auto, EconomyShopGUI, EconomyShopGUI-Premium, ShopGUIPlus or zShop.
+  # auto, EconomyShopGUI, EconomyShopGUI-Premium, ShopGUIPlus, zShop or UltimateShop.
   preferred_plugin: auto
 
 custom_prices:
-  enabled: true
+  enabled: false
 
   # Price for items with no entry below. 0.0 stops them being sold.
   default_price: 1.0

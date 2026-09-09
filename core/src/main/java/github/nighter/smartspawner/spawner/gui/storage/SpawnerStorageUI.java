@@ -269,11 +269,13 @@ public class SpawnerStorageUI {
             slotsToEmpty.addAll(layout.getUsedSlots());
         }
 
+        Player player = !inventory.getViewers().isEmpty() && inventory.getViewers().get(0) instanceof Player p ? p : null;
+
         // Add items from virtual inventory
         addPageItems(updates, slotsToEmpty, spawner, page);
 
         // Add navigation buttons based on layout
-        addNavigationButtons(updates, spawner, page, totalPages, layout);
+        addNavigationButtons(updates, player, spawner, page, totalPages, layout);
 
         // Apply all updates in a batch
         for (int slot : slotsToEmpty) {
@@ -323,7 +325,7 @@ public class SpawnerStorageUI {
         }
     }
 
-    private void addNavigationButtons(Map<Integer, ItemStack> updates, SpawnerData spawner, int page,
+    private void addNavigationButtons(Map<Integer, ItemStack> updates, Player player, SpawnerData spawner, int page,
                                       int totalPages, GuiLayout layout) {
         if (totalPages == -1) {
             totalPages = calculateTotalPages(spawner);
@@ -394,10 +396,10 @@ public class SpawnerStorageUI {
                     });
                     break;
                 case "sell_all":
-                    item = createSellButton(spawner, button);
+                    item = createSellButton(player, spawner, button);
                     break;
                 case "sell_and_exp":
-                    item = createSellAndExpButton(spawner, button);
+                    item = createSellAndExpButton(player, spawner, button);
                     break;
                 case "collect_exp":
                     item = createCollectExpButton(spawner, button);
@@ -475,11 +477,9 @@ public class SpawnerStorageUI {
         });
     }
 
-    private ItemStack createSellButton(SpawnerData spawner, GuiButton button) {
+    private ItemStack createSellButton(Player player, SpawnerData spawner, GuiButton button) {
         Map<String, String> placeholders = new HashMap<>();
-        if (spawner.isSellValueDirty()) {
-            spawner.recalculateSellValue();
-        }
+        spawner.recalculateSellValue(player);
         placeholders.put("total_sell_price", languageManager.formatNumber(spawner.getAccumulatedSellValue()));
         
         return createButtonWithCustomTexture(button, meta -> {
@@ -488,11 +488,9 @@ public class SpawnerStorageUI {
         });
     }
 
-    private ItemStack createSellAndExpButton(SpawnerData spawner, GuiButton button) {
+    private ItemStack createSellAndExpButton(Player player, SpawnerData spawner, GuiButton button) {
         Map<String, String> placeholders = new HashMap<>();
-        if (spawner.isSellValueDirty()) {
-            spawner.recalculateSellValue();
-        }
+        spawner.recalculateSellValue(player);
         placeholders.put("total_sell_price", languageManager.formatNumber(spawner.getAccumulatedSellValue()));
 
         return createButtonWithCustomTexture(button, meta -> {

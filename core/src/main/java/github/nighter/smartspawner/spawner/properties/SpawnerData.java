@@ -192,7 +192,15 @@ public class SpawnerData {
         this.baseMinMobs = plugin.getConfig().getInt("spawner_properties.default.min_mobs", 1);
         this.baseMaxMobs = plugin.getConfig().getInt("spawner_properties.default.max_mobs", 4);
         this.maxStackSize = plugin.getConfig().getInt("spawner_properties.default.max_stack_size", 1000);
-        this.spawnDelay = plugin.getTimeFromConfig("spawner_properties.default.delay", "25s");
+
+        Long customDelay = isItemSpawner()
+                ? plugin.getItemSpawnerSettingsConfig().getSpawnDelay(configName, spawnedItemMaterial)
+                : plugin.getSpawnerSettingsConfig().getSpawnDelay(configName, entityType);
+        if (customDelay != null && customDelay > 0) {
+            this.spawnDelay = customDelay;
+        } else {
+            this.spawnDelay = plugin.getTimeFromConfig("spawner_properties.default.delay", "25s");
+        }
         this.cachedSpawnDelay = (this.spawnDelay + 20L) * 50L; // Add 1 second buffer for GUI display and convert tick to ms
         this.spawnerRange = plugin.getConfig().getInt("spawner_properties.default.range", 16);
 
@@ -278,7 +286,17 @@ public class SpawnerData {
         }
     }
     public void setSpawnDelayFromConfig() {
-        long delay = plugin.getTimeFromConfig("spawner_properties.default.delay", "25s");
+        Long customDelay = isItemSpawner()
+                ? plugin.getItemSpawnerSettingsConfig().getSpawnDelay(configName, spawnedItemMaterial)
+                : plugin.getSpawnerSettingsConfig().getSpawnDelay(configName, entityType);
+
+        long delay;
+        if (customDelay != null && customDelay > 0) {
+            delay = customDelay;
+        } else {
+            delay = plugin.getTimeFromConfig("spawner_properties.default.delay", "25s");
+        }
+
         if (delay <= 0) {
             plugin.getLogger().warning("Invalid spawner delay value in config. Setting to default: 500 ticks (25s)");
             delay = 500L;
@@ -454,6 +472,7 @@ public class SpawnerData {
         this.configName = definition != null ? definition.name() : defaultMobName(plugin, newType);
         this.lootConfig = definition != null ? definition.lootConfig()
                 : plugin.getSpawnerSettingsConfig().getLootConfig(newType);
+        setSpawnDelayFromConfig();
         // Mark sell value as dirty since entity type and prices changed
         this.sellValueDirty = true;
         updateHologramData();
@@ -655,28 +674,35 @@ public class SpawnerData {
      * Should be called when the cache is dirty or on spawner load
      */
     public void recalculateSellValue() {
+        recalculateSellValue(null);
+    }
+
+    public void recalculateSellValue(org.bukkit.entity.Player player) {
         if (lootConfig == null) {
             this.accumulatedSellValue.set(0.0);
-            this.sellValueDirty = false;
+            if (player != null) this.sellValueDirty = false;
             return;
         }
 
         // Get price cache
-        Map<String, Double> priceCache = createPriceCache();
+        Map<String, Double> priceCache = createPriceCache(player);
 
         // Calculate from current inventory
         Map<ItemSignature, Long> items = virtualInventory.getConsolidatedItems();
         double totalValue = 0.0;
 
         for (Map.Entry<ItemSignature, Long> entry : items.entrySet()) {
-            double itemPrice = findItemPrice(entry.getKey(), priceCache);
+            if (entry.getKey() == null || entry.getValue() == null || entry.getValue() <= 0) continue;
+            double itemPrice = findItemPrice(entry.getKey(), entry.getValue().longValue(), priceCache, player);
             if (itemPrice > 0.0) {
-                totalValue += itemPrice * entry.getValue().longValue();
+                totalValue += itemPrice;
             }
         }
 
         this.accumulatedSellValue.set(totalValue);
-        this.sellValueDirty = false;
+        if (player != null) {
+            this.sellValueDirty = false;
+        }
     }
 
     private void subtractAccumulatedSellValue(double removedValue) {
@@ -698,25 +724,29 @@ public class SpawnerData {
      * shop plugin prices aren't yet available when LootItem.sellPrice is baked in.
      */
     public Map<String, Double> createPriceCache() {
-        if (lootConfig == null) {
-            return new java.util.HashMap<>();
-        }
+        return createPriceCache(null);
+    }
 
+    public Map<String, Double> createPriceCache(org.bukkit.entity.Player player) {
         github.nighter.smartspawner.hooks.economy.ItemPriceManager priceManager = plugin.getItemPriceManager();
         Map<String, Double> cache = new java.util.HashMap<>();
-        java.util.List<LootItem> allLootItems = lootConfig.getAllItems();
 
-        for (LootItem lootItem : allLootItems) {
-            // Use live price from ItemPriceManager; fall back to baked sellPrice if unavailable
-            double price = (priceManager != null) ? priceManager.getPrice(lootItem.material()) : 0.0;
-            if (price <= 0.0) {
-                price = lootItem.sellPrice();
-            }
-            if (price > 0.0) {
-                ItemStack template = lootItem.createItemStack();
-                if (template != null) {
-                    String key = createItemKey(template);
-                    cache.put(key, price);
+        if (lootConfig != null) {
+            java.util.List<LootItem> allLootItems = lootConfig.getAllItems();
+
+            for (LootItem lootItem : allLootItems) {
+                // Use live price from ItemPriceManager; fall back to baked sellPrice if unavailable
+                double price = (priceManager != null) ? priceManager.getPrice(lootItem.material(), player) : 0.0;
+                if (price <= 0.0) {
+                    price = lootItem.sellPrice();
+                }
+                if (price > 0.0) {
+                    cache.put(lootItem.material().name(), price);
+                    ItemStack template = lootItem.createItemStack();
+                    if (template != null) {
+                        String key = createItemKey(template);
+                        cache.put(key, price);
+                    }
                 }
             }
         }
@@ -724,16 +754,55 @@ public class SpawnerData {
         return cache;
     }
 
+    public double findItemPrice(ItemSignature itemSignature, Map<String, Double> priceCache) {
+        return findItemPrice(itemSignature, priceCache, null);
+    }
+
     /**
-     * Finds item price using the cache
+     * Finds item price using the cache, with fallback to ItemPriceManager
      */
-    private double findItemPrice(ItemSignature itemSignature, Map<String, Double> priceCache) {
-        if (priceCache == null) {
+    public double findItemPrice(ItemSignature itemSignature, Map<String, Double> priceCache, org.bukkit.entity.Player player) {
+        if (itemSignature == null) {
             return 0.0;
         }
-        String itemKey = createItemKey(itemSignature);
-        Double price = priceCache.get(itemKey);
-        return price != null ? price : 0.0;
+
+        if (priceCache != null) {
+            String itemKey = createItemKey(itemSignature);
+            Double price = priceCache.get(itemKey);
+            if (price != null && price > 0.0) {
+                return price;
+            }
+
+            Double matPrice = priceCache.get(itemSignature.getMaterial().name());
+            if (matPrice != null && matPrice > 0.0) {
+                return matPrice;
+            }
+        }
+
+        if (plugin.getItemPriceManager() != null) {
+            double livePrice = plugin.getItemPriceManager().getPrice(itemSignature.getMaterial(), player);
+            if (livePrice > 0.0) {
+                return livePrice;
+            }
+        }
+
+        return 0.0;
+    }
+
+    public double findItemPrice(ItemSignature itemSignature, long amount, Map<String, Double> priceCache, org.bukkit.entity.Player player) {
+        if (itemSignature == null || amount <= 0) {
+            return 0.0;
+        }
+
+        if (plugin.getItemPriceManager() != null) {
+            double livePrice = plugin.getItemPriceManager().getPrice(itemSignature.getMaterial(), amount, player);
+            if (livePrice > 0.0) {
+                return livePrice;
+            }
+        }
+
+        double unitPrice = findItemPrice(itemSignature, priceCache, player);
+        return unitPrice * amount;
     }
 
     /**

@@ -26,104 +26,108 @@ dependencies:
       required: false
       join-classpath: true
     ShopGUIPlus:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     zShop:
-      load: BEFORE
+      load: AFTER
+      required: false
+      join-classpath: true
+    UltimateShop:
+      load: AFTER
       required: false
       join-classpath: true
 
     # Economy Plugins
     ExcellentEconomy:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     Vault:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
 
     # Protection/Region Plugins
     WorldGuard:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     GriefPrevention:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     Lands:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     Towny:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     SimpleClaimSystem:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     RedProtect:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     minePlots:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     Residence:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     FactionsUUID:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     BlockLocker:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     # World Management Plugins
     Multiverse-Core:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     MultiWorld:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     Worlds:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     SuperiorSkyblock2:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     BentoBox:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     IridiumSkyblock:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
     PlotSquared:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
 
     # RPG/Skill Plugins
     AuraSkills:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
 
     # Drops Plugins
     MythicMobs:
-      load: BEFORE
+      load: AFTER
       required: false
       join-classpath: true
 
