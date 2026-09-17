@@ -128,7 +128,6 @@ tasks.shadowJar {
     relocate("org.mariadb.jdbc", "github.nighter.smartspawner.libs.mariadb")
     relocate("org.bstats", project.group.toString())
     mergeServiceFiles()
-
     // destinationDirectory.set(file("C:\\Users\\Admin\\Desktop\\TestServer\\plugins"))
 }
 
@@ -138,17 +137,12 @@ tasks.build {
 
 
 tasks.runServer {
-    minecraftVersion("26.1.2")
+    minecraftVersion("26.2")
     runDirectory.set(rootProject.layout.projectDirectory.dir("run"))
     // Minecraft bundles JOML 1.10.8, whose Unsafe path is deprecated on Java 25.
     // Prefer JOML's NIO implementation and allow remaining upstream users (such as spark)
     // until Paper updates them, preventing Java 25's terminal-deprecation warning block.
     jvmArgs("-Djoml.nounsafe=true", "--sun-misc-unsafe-memory-access=allow")
-
-//    downloadPlugins {
-//        url("https://cdn.modrinth.com/data/1u6JkXh5/versions/F5ea2ov3/worldedit-bukkit-7.4.5.jar")
-//        modrinth("worldguard", "7.0.18")
-//    }
 }
 
 tasks.processResources {

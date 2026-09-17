@@ -2,6 +2,29 @@
 
 All notable changes to SmartSpawner are documented in this file.
 
+## 1.8.2
+
+### Added
+- Spanish (es_ES) language.
+- Sulfur Cube spawner support for servers on Minecraft 26.2. Its spawner drops no items and gives 2 experience.
+
+### Changed
+- Happy Ghast, Copper Golem and Sulfur Cube now show a translated name in every language.
+
+## 1.8.1
+
+### Fixed
+- Breaking a spawner and placing a new one at the same spot no longer triggers a database save error. Spawner data now saves reliably in this case.
+
+### Changed
+- Spawners that store tools, weapons or armor with different durability now save using less database space.
+- Sorting items in the storage menu is faster.
+- When a claim or region plugin blocks an action on a spawner, only that plugin's own message shows. SmartSpawner no longer adds a second protection message on top.
+- GriefPrevention now uses separate trust levels for each action. Breaking or placing a spawner needs build trust, while opening a spawner's storage menu only needs container trust.
+
+### Notes
+- Spawner storage now uses a more compact save format. Existing data is read and upgraded automatically, and no action is required.
+
 ## 1.8.0
 
 **This release contains several breaking changes.** Back up the `plugins/SmartSpawner/` folder before updating. The give commands changed shape, spawner settings files were renamed and are not carried over, YAML storage and the Bedrock form menus were removed, and several config keys moved. Read the Removed and Notes sections below before updating a live server.
