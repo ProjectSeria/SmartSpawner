@@ -110,12 +110,12 @@ public class SpawnerBreakListener implements Listener {
                 return;
             }
             breakHandled = handleVanillaSpawnerBreak(block, creatureSpawner, player);
+            if (breakHandled) {
+                cleanupAssociatedHopper(block);
+            }
         }
 
         event.setCancelled(true);
-        if (breakHandled) {
-            cleanupAssociatedHopper(block);
-        }
     }
 
     private boolean handleSmartSpawnerBreak(Block block, SpawnerData spawner, Player player) {
@@ -140,20 +140,14 @@ public class SpawnerBreakListener implements Listener {
             return false;
         }
 
-        boolean wantsStackBreak = player.isSneaking() && currentSpawner.getStackSize() > 1;
         boolean bypassDropChance = hasDropChanceBypass(player);
-        if (wantsStackBreak && breakConfig.isSneakBreakEnabled() && !bypassDropChance && hasSmartSpawnerDropChance(currentSpawner)) {
-            messageService.sendMessage(player, "sneak_break_blocked");
-            return false;
-        }
 
         // Track player interaction for last interaction field
         currentSpawner.updateLastInteractedPlayer(player.getName());
 
         plugin.getSpawnerGuiViewManager().closeAllViewersInventory(currentSpawner);
 
-        SpawnerBreakResult result = processDrops(player, location, currentSpawner,
-                wantsStackBreak && breakConfig.isSneakBreakEnabled(), bypassDropChance);
+        SpawnerBreakResult result = processDrops(player, location, currentSpawner, bypassDropChance);
         if (!result.isSuccess()) {
             return false;
         }
@@ -243,7 +237,7 @@ public class SpawnerBreakListener implements Listener {
         return true;
     }
 
-    SpawnerBreakResult processDrops(Player player, Location location, SpawnerData spawner, boolean isCrouching,
+    SpawnerBreakResult processDrops(Player player, Location location, SpawnerData spawner,
                                     boolean bypassDropChance) {
         final int currentStackSize = spawner.getStackSize();
 
@@ -266,25 +260,11 @@ public class SpawnerBreakListener implements Listener {
             }
         }
 
-        int dropAmount;
-        boolean shouldDeleteSpawner;
+        int dropAmount = 1;
+        boolean shouldDeleteSpawner = currentStackSize <= 1;
         int newStackSize = currentStackSize;
-
-        if (isCrouching) {
-            if (currentStackSize <= MAX_STACK_SIZE) {
-                dropAmount = currentStackSize;
-                shouldDeleteSpawner = true;
-            } else {
-                dropAmount = MAX_STACK_SIZE;
-                shouldDeleteSpawner = false;
-                newStackSize = currentStackSize - MAX_STACK_SIZE;
-            }
-        } else {
-            dropAmount = 1;
-            shouldDeleteSpawner = currentStackSize <= 1;
-            if (!shouldDeleteSpawner) {
-                newStackSize = currentStackSize - 1;
-            }
+        if (!shouldDeleteSpawner) {
+            newStackSize = currentStackSize - 1;
         }
 
         if(callAPIEvent(player, location, dropAmount, spawner.getEntityType())) {
@@ -414,6 +394,7 @@ public class SpawnerBreakListener implements Listener {
     }
 
     private void cleanupSpawner(Block block, SpawnerData spawner) {
+        cleanupAssociatedHopper(block);
         spawner.getSpawnerStop().set(true);
         block.setType(Material.AIR);
 

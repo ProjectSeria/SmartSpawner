@@ -56,6 +56,10 @@ public class ShopIntegrationManager implements org.bukkit.event.Listener {
             }
         }
 
+        if (isPluginAvailable("UltimateShop")) {
+            registerProviderIfAvailable("UltimateShop", () -> new UltimateShopProvider(plugin));
+        }
+
         registerProviderIfAvailable("EconomyShopGUI", () -> {
             EconomyShopGUIProvider provider = new EconomyShopGUIProvider(plugin);
 
@@ -87,10 +91,6 @@ public class ShopIntegrationManager implements org.bukkit.event.Listener {
                 }
                 return new ShopGuiPlusProvider(plugin);
             });
-        }
-
-        if (isPluginAvailable("UltimateShop")) {
-            registerProviderIfAvailable("UltimateShop", () -> new UltimateShopProvider(plugin));
         }
 
         // registerProviderIfAvailable("ZShop", () -> new ZShopProvider(plugin));
@@ -251,6 +251,12 @@ public class ShopIntegrationManager implements org.bukkit.event.Listener {
             pluginName.equalsIgnoreCase("zShop")) {
             plugin.getLogger().info("Shop plugin '" + pluginName + "' enabled. Connecting shop integration...");
             initialize();
+            if (plugin.getGuiLayoutConfig() != null) {
+                plugin.getGuiLayoutConfig().loadLayout();
+            }
+            if (plugin.getSpawnerStorageUI() != null) {
+                plugin.getSpawnerStorageUI().reload();
+            }
         }
     }
 

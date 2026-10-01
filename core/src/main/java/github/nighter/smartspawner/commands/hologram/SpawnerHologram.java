@@ -8,6 +8,7 @@ import github.nighter.smartspawner.language.LanguageManager;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.TextDisplay;
@@ -74,8 +75,12 @@ public class SpawnerHologram {
 
         // Use the location scheduler to spawn the entity in the correct region
         Scheduler.runLocationTask(holoLoc, () -> {
+            World world = spawnerLocation.getWorld();
+            if (world == null || !world.isChunkLoaded(holoLoc.getBlockX() >> 4, holoLoc.getBlockZ() >> 4)) {
+                return;
+            }
             try {
-                TextDisplay display = spawnerLocation.getWorld().spawn(holoLoc, TextDisplay.class, td -> {
+                TextDisplay display = world.spawn(holoLoc, TextDisplay.class, td -> {
                     td.setBillboard(Display.Billboard.CENTER);
                     // Get alignment from config with CENTER as default
                     String alignmentStr = plugin.getConfig().getString("hologram.alignment", "CENTER");
@@ -257,12 +262,16 @@ public class SpawnerHologram {
 
         // Use async task to avoid blocking
         Scheduler.runLocationTask(spawnerLocation, () -> {
+            World world = spawnerLocation.getWorld();
+            if (world == null || !world.isChunkLoaded(spawnerLocation.getBlockX() >> 4, spawnerLocation.getBlockZ() >> 4)) {
+                return;
+            }
             // Define a tighter search radius just to catch any potentially duplicated holograms
             // with the same identifier (which shouldn't happen but being safe)
             double searchRadius = 2.0;
 
             // Look for any entity with our specific unique identifier
-            spawnerLocation.getWorld().getNearbyEntities(spawnerLocation, searchRadius, searchRadius, searchRadius)
+            world.getNearbyEntities(spawnerLocation, searchRadius, searchRadius, searchRadius)
                     .stream()
                     .filter(entity -> entity instanceof TextDisplay && entity.getCustomName() != null)
                     .filter(entity -> entity.getCustomName().equals(uniqueIdentifier))

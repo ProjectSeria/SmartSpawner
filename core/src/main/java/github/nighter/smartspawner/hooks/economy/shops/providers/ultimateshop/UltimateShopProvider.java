@@ -176,20 +176,29 @@ public class UltimateShopProvider implements ShopProvider, Listener {
 
                 List<ObjectItem> targetItems = new ArrayList<>();
                 try {
-                    java.lang.reflect.Method m = ShopHelper.class.getMethod("getTargetItems", ItemStorage.class, Player.class);
-                    Object res = m.invoke(null, ItemStorage.of(new ItemStack[]{itemStack}), player);
-                    if (res instanceof List) {
-                        targetItems.addAll((List<ObjectItem>) res);
+                    List<ObjectItem> items = ShopHelper.getTargetItems(new ItemStack[]{itemStack}, player);
+                    if (items != null && !items.isEmpty()) {
+                        targetItems.addAll(items);
                     }
                 } catch (Throwable ignored) {
                 }
 
                 if (targetItems.isEmpty()) {
                     try {
-                        java.lang.reflect.Method m = ShopHelper.class.getMethod("getTargetItem", ItemStack[].class, Player.class);
-                        Object res = m.invoke(null, new ItemStack[]{itemStack}, player);
-                        if (res instanceof ObjectItem) {
-                            targetItems.add((ObjectItem) res);
+                        ObjectItem item = ShopHelper.getTargetItem(new ItemStack[]{itemStack}, player);
+                        if (item != null) {
+                            targetItems.add(item);
+                        }
+                    } catch (Throwable ignored) {
+                    }
+                }
+
+                if (targetItems.isEmpty()) {
+                    try {
+                        java.lang.reflect.Method m = ShopHelper.class.getMethod("getTargetItems", ItemStorage.class, Player.class);
+                        Object res = m.invoke(null, ItemStorage.of(new ItemStack[]{itemStack}), player);
+                        if (res instanceof List) {
+                            targetItems.addAll((List<ObjectItem>) res);
                         }
                     } catch (Throwable ignored) {
                     }
@@ -286,7 +295,7 @@ public class UltimateShopProvider implements ShopProvider, Listener {
 
         // 3. Fallback: Direct API call using ShopHelper
         try {
-            GiveResult giveResult = ShopHelper.getSellPrices(new ItemStack[] { itemStack }, player, 1);
+            GiveResult giveResult = ShopHelper.getSellPrices(new ItemStack[] { itemStack }, player, qty);
             if (giveResult != null && giveResult.getResultMap() != null && !giveResult.getResultMap().isEmpty()) {
                 double total = 0.0;
                 for (Map.Entry<AbstractSingleThing, BigDecimal> entry : giveResult.getResultMap().entrySet()) {

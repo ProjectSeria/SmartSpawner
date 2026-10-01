@@ -424,8 +424,10 @@ public class SpawnerStorageUI {
 
         switch (condition) {
             case "shop_integration":
+            case "sell_integration":
                 return plugin.hasSellIntegration();
             case "no_shop_integration":
+            case "no_sell_integration":
                 return !plugin.hasSellIntegration();
             default:
                 plugin.getLogger().warning("Unknown button condition: " + condition);

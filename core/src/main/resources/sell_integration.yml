@@ -16,7 +16,7 @@ price_source_mode: SHOP_PRIORITY
 shop_integration:
   enabled: true
   # auto, EconomyShopGUI, EconomyShopGUI-Premium, ShopGUIPlus, zShop or UltimateShop.
-  preferred_plugin: auto
+  preferred_plugin: UltimateShop
 
 custom_prices:
   enabled: false

@@ -198,6 +198,7 @@ sell_button:
     - ' &aℹ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ:'
     - '  &8• &fYou will sell all items'
     - '   &ffrom the storage.'
+    - '  &8• &fTotal value: &a${total_sell_price}'
     - ''
     - '&a ▸ Click to sell!'
 

@@ -638,6 +638,10 @@ public class SpawnerDatabaseHandler implements SpawnerStorage {
 
         // Restore the complete in-cage model from config when the physical block is loaded.
         Scheduler.runLocationTask(location, () -> {
+            org.bukkit.World locWorld = location.getWorld();
+            if (locWorld == null || !locWorld.isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
+                return;
+            }
             org.bukkit.block.Block block = location.getBlock();
             if (block.getType() == Material.SPAWNER) {
                 org.bukkit.block.BlockState state = block.getState(false);

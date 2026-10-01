@@ -84,6 +84,10 @@ public class SpawnerManager {
     private void refreshSpawnerDisplay(SpawnerData spawner) {
         Location location = spawner.getSpawnerLocation();
         Scheduler.runLocationTask(location, () -> {
+            World locWorld = location.getWorld();
+            if (locWorld == null || !locWorld.isChunkLoaded(location.getBlockX() >> 4, location.getBlockZ() >> 4)) {
+                return;
+            }
             Block block = location.getBlock();
             if (block.getType() != Material.SPAWNER || !(block.getState(false) instanceof CreatureSpawner state)) {
                 return;

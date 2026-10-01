@@ -46,19 +46,11 @@ slot_1:
 slot_4:
   material: GOLD_INGOT
   enabled: true
-  if:
-    sell_integration:
-      click:
-        action: "sell_and_exp"
-        sound: ui.button.click
-        sound_success: block.note_block.bell
-        sound_fail: block.note_block.pling
-    no_sell_integration:
-      material: SPECTRAL_ARROW
-      click:
-        action: "take_all"
-        sound_success: entity.item.pickup
-        sound_fail: block.note_block.pling
+  click:
+    action: "sell_all"
+    sound: ui.button.click
+    sound_success: block.note_block.bell
+    sound_fail: block.note_block.pling
 
 slot_5:
   material: PLAYER_HEAD

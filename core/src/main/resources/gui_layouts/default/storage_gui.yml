@@ -64,22 +64,15 @@ slot_4:
     action: "open_filter"
     sound: ui.button.click
 
-# Multi-purpose button (sell with integration, return without)
+# Sell all items button
 slot_5:
   material: GOLD_INGOT
   enabled: true
-  if:
-    sell_integration:
-      click:
-        action: "sell_all"
-        sound: ui.button.click
-        sound_success: block.note_block.bell
-        sound_fail: block.note_block.pling
-    no_sell_integration:
-      material: RED_STAINED_GLASS_PANE
-      click:
-        action: "return_main"
-        sound: ui.button.click
+  click:
+    action: "sell_all"
+    sound: ui.button.click
+    sound_success: block.note_block.bell
+    sound_fail: block.note_block.pling
 
 # Take all items button
 slot_6:

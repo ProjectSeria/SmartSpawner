@@ -49,7 +49,7 @@ dependencies {
     compileOnly(libs.minecodes.plots)
     compileOnly(libs.zshop)
     compileOnly(libs.zmenu)
-    compileOnly(libs.ultimateshop)
+    compileOnly(fileTree("../libs") { include("UltimateShop*.jar") })
 
     implementation(libs.griefprevention)
     implementation(libs.lands)

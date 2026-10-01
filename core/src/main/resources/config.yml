@@ -52,7 +52,7 @@ spawner_break:
   durability_loss: 99999999
 
   # Sneak to break up to 64 spawners off a stack at once. Off breaks one at a time.
-  sneak_break: true
+  sneak_break: false
 
   # Sell the storage and claim the XP when the last spawner of a stack is removed.
   # Needs sell integration and the smartspawner.sellall permission.
