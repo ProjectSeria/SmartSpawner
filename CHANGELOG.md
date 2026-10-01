@@ -4,6 +4,12 @@ All notable changes to SmartSpawner are documented in this file.
 
 ## 1.8.2
 
+**This release fixes a critical item duplication exploit. Update as soon as possible.**
+
+### Fixed
+- Item duplication in the spawner storage menu involving multiple players with Autism Client.
+- Clicking items quickly in the storage menu no longer floods chat with "clicking too fast" and "inventory full" messages.
+
 ### Added
 - Spanish (es_ES) language.
 - Sulfur Cube spawner support for servers on Minecraft 26.2. Its spawner drops no items and gives 2 experience.

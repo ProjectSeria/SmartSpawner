@@ -23,6 +23,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -50,6 +51,10 @@ public class SpawnerStorageAction implements Listener {
     private record TransferResult(boolean anyItemMoved, boolean inventoryFull, int totalMoved) {}
     private final Map<UUID, Long> lastItemClickTime = new ConcurrentHashMap<>();
     private static final long ITEM_CLICK_DELAY_MS = 100;
+    // Shift + double-click makes the client send one click per matching slot in the same tick,
+    // so warnings need their own cooldown or they flood chat.
+    private final Map<UUID, Map<String, Long>> lastWarningTimes = new ConcurrentHashMap<>();
+    private static final long WARNING_COOLDOWN_MS = 1000;
 
     public SpawnerStorageAction(SmartSpawner plugin) {
         this.plugin = plugin;
@@ -383,12 +388,12 @@ public class SpawnerStorageAction implements Listener {
 
                 // Notify if inventory was full
                 if (remaining > 0) {
-                    messageService.sendMessage(player, "inventory_full");
+                    sendThrottledWarning(player, "inventory_full");
                 }
             }
         } else {
             // No items moved - inventory full
-            messageService.sendMessage(player, "inventory_full");
+            sendThrottledWarning(player, "inventory_full");
         }
     }
 
@@ -581,16 +586,28 @@ public class SpawnerStorageAction implements Listener {
         long last = lastItemClickTime.getOrDefault(player.getUniqueId(), 0L);
 
         if ((now - last) < ITEM_CLICK_DELAY_MS) {
-            messageService.sendMessage(player, "click_too_fast");
+            sendThrottledWarning(player, "click_too_fast");
             return true;
         }
         return false;
+    }
+
+    private void sendThrottledWarning(Player player, String messageKey) {
+        long now = System.currentTimeMillis();
+        Map<String, Long> playerWarnings = lastWarningTimes.computeIfAbsent(
+                player.getUniqueId(), ignored -> new ConcurrentHashMap<>());
+        long lastWarning = playerWarnings.getOrDefault(messageKey, 0L);
+        if ((now - lastWarning) >= WARNING_COOLDOWN_MS) {
+            playerWarnings.put(messageKey, now);
+            messageService.sendMessage(player, messageKey);
+        }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         UUID playerId = event.getPlayer().getUniqueId();
         lastItemClickTime.remove(playerId);
+        lastWarningTimes.remove(playerId);
     }
 
     private boolean handleSortItemsClick(Player player, SpawnerData spawner, Inventory inventory) {
@@ -848,10 +865,38 @@ public class SpawnerStorageAction implements Listener {
 
     private void sendTransferMessage(Player player, TransferResult result) {
         if (!result.anyItemMoved) {
-            messageService.sendMessage(player, "inventory_full");
+            sendThrottledWarning(player, "inventory_full");
         }
     }
 
+
+    /**
+     * Storage is single-viewer: opening a spawner's storage while another player has it open is refused.
+     * Each viewer holds their own copy of the page, so with two viewers one can take items the other
+     * already emptied from the copy that has not been refreshed yet.
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        if (!(event.getPlayer() instanceof Player player)
+                || !(event.getInventory().getHolder(false) instanceof StoragePageHolder holder)) {
+            return;
+        }
+
+        String spawnerId = holder.getSpawnerData().getSpawnerId();
+        for (Player viewer : spawnerGuiViewManager.getViewers(spawnerId)) {
+            if (!viewer.getUniqueId().equals(player.getUniqueId()) && isViewingStorage(viewer, spawnerId)) {
+                event.setCancelled(true);
+                messageService.sendMessage(player, "storage_in_use");
+                return;
+            }
+        }
+    }
+
+    // Checks the open inventory rather than trusting the tracker, so a stale entry never locks the storage.
+    private boolean isViewingStorage(Player viewer, String spawnerId) {
+        return viewer.getOpenInventory().getTopInventory().getHolder(false) instanceof StoragePageHolder holder
+                && holder.getSpawnerData().getSpawnerId().equals(spawnerId);
+    }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
