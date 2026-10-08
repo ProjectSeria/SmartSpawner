@@ -1,74 +1,56 @@
-# Drop tables, XP and head textures for every mob a Smart Spawner can be.
-# Guide and examples: https://openvdra.github.io/SmartSpawner/spawner-mobs/
+# Drop tables, XP and menu heads. Each mob's spawner is under its own name, like zombie.
+# Full guide: https://docs.smartspawner.site/docs/spawner-mobs
 
-allay_spawner:
-  entity: ALLAY
+allay:
   experience: 0
-  # Optional spawner item drop chance when this Smart Spawner is broken.
-  # If this key is omitted, the spawner item drop chance defaults to 100.0.
-  # Values must be percentages from 0.0 to 100.0.
+  # Chance to drop the spawner item when broken, 0.0 to 100.0. Default 100.0.
   # drop_chance: 100.0
   mob_head:
-    item: "ALLAY_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "df5de940bfe499c59ee8dac9f9c3919e7535eff3a9acb16f4842bf290f4c679f"
 
 # Reference: https://minecraft.wiki/w/Armadillo#Drops
-armadillo_spawner:
-  entity: ARMADILLO
+armadillo:
   experience: 3
   mob_head:
-    item: "ARMADILLO_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "9164ed0e0ef69b0ce7815e4300b4413a4828fcb0092918543545a418a48e0c3c"
 
 # Reference: https://minecraft.wiki/w/Axolotl#Drops
-axolotl_spawner:
-  entity: AXOLOTL
+axolotl:
   experience: 1
   mob_head:
-    item: "AXOLOTL_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "21c3aa0d539208b47972bf8e72f0505cdcfb8d7796b2fcf85911ce94fd0193d0"
 
 # Reference: https://minecraft.wiki/w/Bat#Drops
-bat_spawner:
-  entity: BAT
+bat:
   experience: 0
   mob_head:
-    item: "BAT_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "81c5cc1f40005a33124c60384a0f17a36a7b19ae90f1c32dcda17b5b56280a43"
 
 # Reference: https://minecraft.wiki/w/Bee#Drops
-bee_spawner:
-  entity: BEE
+bee:
   experience: 3
   mob_head:
-    item: "BEE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "76ded8355a5625893e8041877af65683c2fd0aa09c3d3c1c94f5f80a0f8c22cb"
 
 # Reference: https://minecraft.wiki/w/Blaze#Drops
-blaze_spawner:
-  entity: BLAZE
-  spawn_delay: "90s"
-  experience: 1
+blaze:
+  experience: 10
   loot:
     1:
       item: BLAZE_ROD
-      amount: 1-1
-      chance: 50.0
-    2:
-      item: GLOWSTONE_DUST
-      amount: 0-2
-      chance: 25.0
-    3:
-      item: MAGMA_CREAM
       amount: 0-1
-      chance: 5.0
+      chance: 50.0
   mob_head:
-    item: "BLAZE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "737623f79f7eb4f3f80da65b652cc44b2148eea41f9ffe2e86a23bdf49ab77b1"
 
 # Reference: https://minecraft.wiki/w/Bogged#Drops
-bogged_spawner:
-  entity: BOGGED
+bogged:
   experience: 5
   loot:
     1:
@@ -89,38 +71,30 @@ bogged_spawner:
       amount: 0-1
       chance: 50.0
   mob_head:
-    item: "BOGGED_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "a3b9003ba2d05562c75119b8a62185c67130e9282f7acbac4bc2824c21eb95d9"
 
 # Reference: https://minecraft.wiki/w/Breeze#Drops
-breeze_spawner:
-  entity: BREEZE
-  spawn_delay: "300s"
-  experience: 50
+breeze:
+  experience: 10
   loot:
     1:
       item: BREEZE_ROD
       amount: 1-2
-      chance: 50.0
-    2:
-      item: WIND_CHARGE
-      amount: 1-3
-      chance: 50.0
+      chance: 100.0
   mob_head:
-    item: "BREEZE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "a275728af7e6a29c88125b675a39d88ae9919bb61fdc200337fed6ab0c49d65c"
 
 # Reference: https://minecraft.wiki/w/Camel#Drops
-camel_spawner:
-  entity: CAMEL
+camel:
   experience: 3
   mob_head:
-    item: "CAMEL_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "7eb6ad908b8d5155bc4d249271ef6084d455dd0e70a4002eb148f9e20b9deb2c"
 
 # Reference: https://minecraft.wiki/w/Camel_Husk#Drops
-camel_husk_spawner:
-  entity: CAMEL_HUSK
+camel_husk:
   experience: 3
   loot:
     1:
@@ -128,12 +102,11 @@ camel_husk_spawner:
       amount: 2-3
       chance: 100.0
   mob_head:
-    item: "CAMEL_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "750bfc9b2cc40f4d8d0224ccbabac26b338aa947d99dcde769f859b59b8d0b0e"
 
 # Reference: https://minecraft.wiki/w/Cat#Drops
-cat_spawner:
-  entity: CAT
+cat:
   experience: 1
   loot:
     1:
@@ -141,64 +114,43 @@ cat_spawner:
       amount: 0-2
       chance: 66.67
   mob_head:
-    item: "CAT_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "e0eeaa869f53fa989198f5595520aec9395509aba993596a86654b3a0f6ca4a6"
 
 # Reference: https://minecraft.wiki/w/Cave_Spider#Drops
-cave_spider_spawner:
-  entity: CAVE_SPIDER
-  spawn_delay: "105s"
-  experience: 2
+cave_spider:
+  experience: 5
   loot:
     1:
-      item: STRING
-      amount: 1-3
-      chance: 100.0
-    2:
       item: SPIDER_EYE
-      amount: 1-1
-      chance: 50.0
-    3:
-      item: FERMENTED_SPIDER_EYE
       amount: 0-1
-      chance: 2.5
-    4:
-      item: POISONOUS_POTATO
-      amount: 0-1
-      chance: 5.0
+      chance: 33.33
+    2:
+      item: STRING
+      amount: 0-2
+      chance: 66.67
   mob_head:
-    item: "CAVE_SPIDER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "eccc4a32d45d74e8b14ef1ffd55cd5f381a06d4999081d52eaea12e13293e209"
 
 # Reference: https://minecraft.wiki/w/Chicken#Drops
-chicken_spawner:
-  entity: CHICKEN
-  spawn_delay: "150s"
-  experience: 2
+chicken:
+  experience: 3
   loot:
     1:
       item: FEATHER
-      amount: 1-2
-      chance: 70.0
+      amount: 0-2
+      chance: 66.67
     2:
       item: CHICKEN
       amount: 1-1
       chance: 100.0
-    3:
-      item: EGG
-      amount: 1-1
-      chance: 10.0
-    4:
-      item: WHEAT_SEEDS
-      amount: 0-1
-      chance: 5.0
   mob_head:
-    item: "CHICKEN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "4e8f3ea46735ad0c106c549ccb6cd489c97a41e73d092497ee424becd9dfd29c"
 
 # Reference: https://minecraft.wiki/w/Cod#Drops
-cod_spawner:
-  entity: COD
+cod:
   experience: 1
   loot:
     1:
@@ -210,12 +162,11 @@ cod_spawner:
       amount: 0-1
       chance: 5.0
   mob_head:
-    item: "COD_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "7892d7dd6aadf35f86da27fb63da4edda211df96d2829f691462a4fb1cab0"
 
 # Reference: https://minecraft.wiki/w/Copper_Golem#Drops
-copper_golem_spawner:
-  entity: COPPER_GOLEM
+copper_golem:
   experience: 0
   loot:
     1:
@@ -223,64 +174,46 @@ copper_golem_spawner:
       amount: 1-3
       chance: 100.0
   mob_head:
-    item: "SPAWNER"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "fb2c96b6961ff5b53075116aa94331c471851de5008ba0594c387b46a429ebc4"
 
 # Reference: https://minecraft.wiki/w/Cow#Drops
-cow_spawner:
-  entity: COW
-  spawn_delay: "150s"
-  experience: 2
+cow:
+  experience: 3
   loot:
     1:
+      item: LEATHER
+      amount: 0-2
+      chance: 66.67
+    2:
       item: BEEF
       amount: 1-3
       chance: 100.0
-    2:
-      item: LEATHER
-      amount: 0-2
-      chance: 80.0
-    3:
-      item: MILK_BUCKET
-      amount: 1-1
-      chance: 5.0
   mob_head:
-    item: "COW_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "b667c0e107be79d7679bfe89bbc57c6bf198ecb529a3295fcfdfd2f24408dca3"
 
 # Reference: https://minecraft.wiki/w/Creaking#Drops
-creaking_spawner:
-  entity: CREAKING
+creaking:
   experience: 0
   mob_head:
-    item: "CREAKING_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "ac91c87bbe7f4c586e0f8b60f9b76d173a41daa302944531703be9ff4fd117f8"
 
 # Reference: https://minecraft.wiki/w/Creeper#Drops
-creeper_spawner:
-  entity: CREEPER
-  spawn_delay: "120s"
-  experience: 120
+creeper:
+  experience: 5
   loot:
     1:
       item: GUNPOWDER
-      amount: 1-2
-      chance: 100.0
-    2:
-      item: TNT
-      amount: 0-1
-      chance: 2.5
-    3:
-      item: MUSIC_DISC_CAT
-      amount: 1-1
-      chance: 1.0
+      amount: 0-2
+      chance: 66.67
   mob_head:
-    item: "CREEPER_SPAWN_EGG"
+    item: "CREEPER_HEAD"
     hash_texture: null
 
 # Reference: https://minecraft.wiki/w/Dolphin#Drops
-dolphin_spawner:
-  entity: DOLPHIN
+dolphin:
   experience: 1
   loot:
     1:
@@ -288,12 +221,11 @@ dolphin_spawner:
       amount: 0-1
       chance: 50.0
   mob_head:
-    item: "DOLPHIN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "8e9688b950d880b55b7aa2cfcd76e5a0fa94aac6d16f78e833f7443ea29fed3"
 
 # Reference: https://minecraft.wiki/w/Donkey#Drops
-donkey_spawner:
-  entity: DONKEY
+donkey:
   experience: 1
   loot:
     1:
@@ -301,38 +233,32 @@ donkey_spawner:
       amount: 0-2
       chance: 66.67
   mob_head:
-    item: "DONKEY_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "63a976c047f412ebc5cb197131ebef30c004c0faf49d8dd4105fca1207edaff3"
 
 # Reference: https://minecraft.wiki/w/Drowned#Drops
-drowned_spawner:
-  entity: DROWNED
-  spawn_delay: "150s"
-  experience: 8
+drowned:
+  experience: 5
   loot:
     1:
       item: ROTTEN_FLESH
-      amount: 1-2
-      chance: 70.0
+      amount: 0-2
+      chance: 66.67
     2:
       item: COPPER_INGOT
-      amount: 1-1
-      chance: 1.0
-    3:
-      item: GOLD_INGOT
       amount: 0-1
-      chance: 1.0
-    4:
-      item: NAUTILUS_SHELL
+      chance: 11.0
+    3:
+      item: TRIDENT
       amount: 1-1
-      chance: 3.0
+      chance: 0.53
+      durability: 1-250
   mob_head:
-    item: "DROWNED_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "c84df79c49104b198cdad6d99fd0d0bcf1531c92d4ab6269e40b7d3cbbb8e98c"
 
 # Reference: https://minecraft.wiki/w/Elder_Guardian#Drops
-elder_guardian_spawner:
-  entity: ELDER_GUARDIAN
+elder_guardian:
   experience: 10
   loot:
     1:
@@ -356,64 +282,46 @@ elder_guardian_spawner:
       amount: 0-1
       chance: 50.0
   mob_head:
-    item: "ELDER_GUARDIAN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "8df4fec3aa34ceddb025a42c9fc435a8029b062598b325322ba3cb5e5f351c1f"
 
 # Reference: https://minecraft.wiki/w/Enderman#Drops
-enderman_spawner:
-  entity: ENDERMAN
-  spawn_delay: "240s"
-  experience: 20
+enderman:
+  experience: 5
   loot:
     1:
       item: ENDER_PEARL
       amount: 0-1
       chance: 50.0
-    2:
-      item: CHORUS_FRUIT
-      amount: 0-1
-      chance: 5.0
-    3:
-      item: DIAMOND
-      amount: 1-1
-      chance: 0.5
   mob_head:
-    item: "ENDERMAN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "4f24767c8138b3dfec02f77bd151994d480d4e869664ce09a26b19289212162b"
 
 # Reference: https://minecraft.wiki/w/Endermite#Drops
-endermite_spawner:
-  entity: ENDERMITE
+endermite:
   experience: 3
   mob_head:
-    item: "ENDERMITE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "5bc7b9d36fb92b6bf292be73d32c6c5b0ecc25b44323a541fae1f1e67e393a3e"
 
 # Reference: https://minecraft.wiki/w/Evoker#Drops
-evoker_spawner:
-  entity: EVOKER
-  spawn_delay: "420s"
-  experience: 150
+evoker:
+  experience: 10
   loot:
     1:
+      item: EMERALD
+      amount: 0-1
+      chance: 50.0
+    2:
       item: TOTEM_OF_UNDYING
       amount: 1-1
-      chance: 5.0
-    2:
-      item: EMERALD
-      amount: 2-4
       chance: 100.0
-    3:
-      item: LAPIS_LAZULI
-      amount: 1-3
-      chance: 30.0
   mob_head:
-    item: "EVOKER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "630ce775edb65db8c2741bdfae84f3c0d0285aba93afadc74900d55dfd9504a5"
 
 # Reference: https://minecraft.wiki/w/Fox#Drops
-fox_spawner:
-  entity: FOX
+fox:
   experience: 1
   loot:
     1:
@@ -445,42 +353,34 @@ fox_spawner:
       amount: 1-1
       chance: 4.0
   mob_head:
-    item: "FOX_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "d8954a42e69e0881ae6d24d4281459c144a0d5a968aed35d6d3d73a3c65d26a"
 
 # Reference: https://minecraft.wiki/w/Frog#Drops
-frog_spawner:
-  entity: FROG
+frog:
   experience: 1
   mob_head:
-    item: "FROG_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "2ca4a8e494582c62aaa2c92474b16d69cd63baa3d3f50a4b631d6559ca0f33f5"
 
 # Reference: https://minecraft.wiki/w/Ghast#Drops
-ghast_spawner:
-  entity: GHAST
-  spawn_delay: "270s"
-  experience: 130
+ghast:
+  experience: 5
   loot:
     1:
       item: GHAST_TEAR
-      amount: 1-1
+      amount: 0-1
       chance: 50.0
     2:
       item: GUNPOWDER
-      amount: 1-2
-      chance: 100.0
-    3:
-      item: FIRE_CHARGE
-      amount: 1-2
-      chance: 25.0
+      amount: 0-2
+      chance: 66.67
   mob_head:
-    item: "GHAST_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "64ab8a22e7687cc4c78f3b6ff5b1eb04917b51cd3cd7dbce36171160b3c77ced"
 
 # Reference: https://minecraft.wiki/w/Glow_Squid#Drops
-glow_squid_spawner:
-  entity: GLOW_SQUID
+glow_squid:
   experience: 1
   loot:
     1:
@@ -488,20 +388,18 @@ glow_squid_spawner:
       amount: 1-3
       chance: 100.0
   mob_head:
-    item: "GLOW_SQUID_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "4cb07d905888f8472252f9cfa39aa317babcad30af08cfe751adefa716b02036"
 
 # Reference: https://minecraft.wiki/w/Goat#Drops
-goat_spawner:
-  entity: GOAT
+goat:
   experience: 1
   mob_head:
-    item: "GOAT_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "457a0d538fa08a7affe312903468861720f9fa34e86d44b89dcec5639265f03"
 
 # Reference: https://minecraft.wiki/w/Guardian#Drops
-guardian_spawner:
-  entity: GUARDIAN
+guardian:
   experience: 10
   loot:
     1:
@@ -517,20 +415,18 @@ guardian_spawner:
       amount: 0-1
       chance: 40.0
   mob_head:
-    item: "GUARDIAN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "b8e725779c234c590cce854db5c10485ed8d8a33fa9b2bdc3424b68bb1380bed"
 
 # Reference: https://minecraft.wiki/w/Happy_Ghast#Drops
-happy_ghast_spawner:
-  entity: HAPPY_GHAST
+happy_ghast:
   experience: 3
   mob_head:
-    item: "GHAST_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "a1a36cb93d01675c4622dd5c8d872110911ec12c372e89afa8ba03862867f6fb"
 
 # Reference: https://minecraft.wiki/w/Hoglin#Drops
-hoglin_spawner:
-  entity: HOGLIN
+hoglin:
   experience: 5
   loot:
     1:
@@ -542,12 +438,11 @@ hoglin_spawner:
       amount: 2-4
       chance: 100.0
   mob_head:
-    item: "HOGLIN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "7ad7b5aeb220c079e319cd70ac8800e80774a9313c22f38e77afb89999e6ec87"
 
 # Reference: https://minecraft.wiki/w/Horse#Drops
-horse_spawner:
-  entity: HORSE
+horse:
   experience: 3
   loot:
     1:
@@ -555,12 +450,11 @@ horse_spawner:
       amount: 0-2
       chance: 66.67
   mob_head:
-    item: "HORSE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "e335e31961713353a76401e00c3454b7ca885b7784d5288d3227222d9b48d393"
 
 # Reference: https://minecraft.wiki/w/Husk#Drops
-husk_spawner:
-  entity: HUSK
+husk:
   experience: 5
   loot:
     1:
@@ -580,34 +474,27 @@ husk_spawner:
       amount: 0-1
       chance: 0.83
   mob_head:
-    item: "HUSK_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "d674c63c8db5f4ca628d69a3b1f8a36e29d8fd775e1a6bdb6cabb4be4db121"
 
 # Reference: https://minecraft.wiki/w/Iron_Golem#Drops
-iron_golem_spawner:
-  entity: IRON_GOLEM
-  spawn_delay: "300s"
-  experience: 75
+iron_golem:
+  experience: 0
   loot:
     1:
       item: IRON_INGOT
-      amount: 1-1
-      chance: 75.0
+      amount: 3-5
+      chance: 100.0
     2:
       item: POPPY
-      amount: 1-1
-      chance: 50.0
-    3:
-      item: PUMPKIN
-      amount: 0-1
-      chance: 5.0
+      amount: 0-2
+      chance: 66.67
   mob_head:
-    item: "IRON_GOLEM_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "4271913a3fc8f56bdf6b90a4b4ed6a05c562ce0076b5344d444fb2b040ae57d"
 
 # Reference: https://minecraft.wiki/w/Llama#Drops
-llama_spawner:
-  entity: LLAMA
+llama:
   experience: 1
   loot:
     1:
@@ -615,12 +502,11 @@ llama_spawner:
       amount: 0-2
       chance: 66.67
   mob_head:
-    item: "LLAMA_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "9f7d90b305aa64313c8d4404d8d652a96eba8a754b67f4347dcccdd5a6a63398"
 
 # Reference: https://minecraft.wiki/w/Nautilus#Drops
-nautilus_spawner:
-  entity: NAUTILUS
+nautilus:
   experience: 3
   loot:
     1:
@@ -628,64 +514,39 @@ nautilus_spawner:
       amount: 0-1
       chance: 5.0
   mob_head:
-    item: "NAUTILUS_SHELL"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "b53d63eb175b00fb35285f4330d0be68a0713db94e00e6fdd85832d41e3a08b"
 
 # Reference: https://minecraft.wiki/w/Magma_Cube#Drops
-magma_cube_spawner:
-  entity: MAGMA_CUBE
-  spawn_delay: "180s"
-  experience: 32
+magma_cube:
+  experience: 4
   loot:
     1:
       item: MAGMA_CREAM
-      amount: 1-1
-      chance: 50.0
-    2:
-      item: NETHER_WART
-      amount: 0-1
-      chance: 15.0
-    3:
-      item: FIRE_CHARGE
-      amount: 1-1
-      chance: 5.0
+      amount: 2-6
+      chance: 25.0
   mob_head:
-    item: "MAGMA_CUBE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "38957d5023c937c4c41aa2412d43410bda23cf79a9f6ab36b76fef2d7c429"
 
 # Reference: https://minecraft.wiki/w/Mooshroom#Drops
-mooshroom_spawner:
-  entity: MOOSHROOM
-  spawn_delay: "180s"
-  experience: 180
+mooshroom:
+  experience: 1
   loot:
     1:
+      item: LEATHER
+      amount: 0-2
+      chance: 66.67
+    2:
       item: BEEF
       amount: 1-3
       chance: 100.0
-    2:
-      item: LEATHER
-      amount: 0-2
-      chance: 80.0
-    3:
-      item: RED_MUSHROOM
-      amount: 1-2
-      chance: 100.0
-    4:
-      item: BROWN_MUSHROOM
-      amount: 1-1
-      chance: 50.0
-    5:
-      item: MUSHROOM_STEW
-      amount: 1-1
-      chance: 5.0
   mob_head:
-    item: "MOOSHROOM_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "45603d539f666fdf0f7a0fe20b81dfef3abe6c51da34b9525a5348432c5523b2"
 
 # Reference: https://minecraft.wiki/w/Mule#Drops
-mule_spawner:
-  entity: MULE
+mule:
   experience: 1
   loot:
     1:
@@ -693,20 +554,18 @@ mule_spawner:
       amount: 0-2
       chance: 66.67
   mob_head:
-    item: "MULE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "a0486a742e7dda0bae61ce2f55fa13527f1c3b334c57c034bb4cf132fb5f5f"
 
 # Reference: https://minecraft.wiki/w/Ocelot#Drops
-ocelot_spawner:
-  entity: OCELOT
+ocelot:
   experience: 1
   mob_head:
-    item: "OCELOT_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "5657cd5c2989ff97570fec4ddcdc6926a68a3393250c1be1f0b114a1db1"
 
 # Reference: https://minecraft.wiki/w/Panda#Drops
-panda_spawner:
-  entity: PANDA
+panda:
   experience: 1
   loot:
     1:
@@ -714,12 +573,11 @@ panda_spawner:
       amount: 1-1
       chance: 100.0
   mob_head:
-    item: "PANDA_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "d5c3d618a70cc062e2edfaed15173e2a32ab6d773cf6050452e1b97fc66fb388"
 
 # Reference: https://minecraft.wiki/w/Parched#Drops
-parched_spawner:
-  entity: PARCHED
+parched:
   experience: 5
   loot:
     1:
@@ -735,12 +593,11 @@ parched_spawner:
       amount: 0-1
       chance: 50.0
   mob_head:
-    item: "SPAWNER"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "24aeceff5f26dd8413c5c03547c234ac03108d187af0b9cd834a8ce12598591c"
 
 # Reference: https://minecraft.wiki/w/Parrot#Drops
-parrot_spawner:
-  entity: PARROT
+parrot:
   experience: 1
   loot:
     1:
@@ -748,12 +605,11 @@ parrot_spawner:
       amount: 1-2
       chance: 100.0
   mob_head:
-    item: "PARROT_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "5df4b3401a4d06ad66ac8b5c4d189618ae617f9c143071c8ac39a563cf4e4208"
 
 # Reference: https://minecraft.wiki/w/Phantom#Drops
-phantom_spawner:
-  entity: PHANTOM
+phantom:
   experience: 5
   loot:
     1:
@@ -761,34 +617,23 @@ phantom_spawner:
       amount: 0-1
       chance: 50.0
   mob_head:
-    item: "PHANTOM_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "adfe51801761660ebf6dae70e9cad588b2ef5e6cb2b3194d028a40ac0eebcdf5"
 
 # Reference: https://minecraft.wiki/w/Pig#Drops
-pig_spawner:
-  entity: PIG
-  spawn_delay: "150s"
-  experience: 2
+pig:
+  experience: 1
   loot:
     1:
       item: PORKCHOP
       amount: 1-3
       chance: 100.0
-    2:
-      item: LEATHER
-      amount: 0-1
-      chance: 15.0
-    3:
-      item: SADDLE
-      amount: 1-1
-      chance: 1.5
   mob_head:
-    item: "PIG_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "9b1760e3778f8087046b86bec6a0a83a567625f30f0d6bce866d4bed95dba6c1"
 
 # Reference: https://minecraft.wiki/w/Piglin#Drops
-piglin_spawner:
-  entity: PIGLIN
+piglin:
   experience: 5
   loot:
     1:
@@ -802,12 +647,11 @@ piglin_spawner:
       chance: 8.5
       durability: 1-32
   mob_head:
-    item: "PIGLIN_SPAWN_EGG"
+    item: "PIGLIN_HEAD"
     hash_texture: null
 
 # Reference: https://minecraft.wiki/w/Piglin_Brute#Drops
-piglin_brute_spawner:
-  entity: PIGLIN_BRUTE
+piglin_brute:
   experience: 20
   loot:
     1:
@@ -816,12 +660,11 @@ piglin_brute_spawner:
       chance: 8.5
       durability: 1-32
   mob_head:
-    item: "PIGLIN_BRUTE_SPAWN_EGG"
+    item: "PIGLIN_HEAD"
     hash_texture: null
 
 # Reference: https://minecraft.wiki/w/Pillager#Drops
-pillager_spawner:
-  entity: PILLAGER
+pillager:
   experience: 5
   loot:
     1:
@@ -834,12 +677,11 @@ pillager_spawner:
       amount: 0-2
       chance: 100.0
   mob_head:
-    item: "PILLAGER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "4aee6bb37cbfc92b0d86db5ada4790c64ff4468d68b84942fde04405e8ef5333"
 
 # Reference: https://minecraft.wiki/w/Polar_Bear#Drops
-polar_bear_spawner:
-  entity: POLAR_BEAR
+polar_bear:
   experience: 1
   loot:
     1:
@@ -851,12 +693,11 @@ polar_bear_spawner:
       amount: 0-2
       chance: 16.67
   mob_head:
-    item: "POLAR_BEAR_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "3d3cd8548e7dceb5c2394d1b00da2c61ffc0dde46229b10509eb27a0dcb23bfb"
 
 # Reference: https://minecraft.wiki/w/Pufferfish#Drops
-pufferfish_spawner:
-  entity: PUFFERFISH
+pufferfish:
   experience: 3
   loot:
     1:
@@ -868,12 +709,11 @@ pufferfish_spawner:
       amount: 0-1
       chance: 5.0
   mob_head:
-    item: "PUFFERFISH_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "292350c9f0993ed54db2c7113936325683ffc20104a9b622aa457d37e708d931"
 
 # Reference: https://minecraft.wiki/w/Rabbit#Drops
-rabbit_spawner:
-  entity: RABBIT
+rabbit:
   experience: 3
   loot:
     1:
@@ -889,12 +729,11 @@ rabbit_spawner:
       amount: 0-1
       chance: 10.0
   mob_head:
-    item: "RABBIT_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "cd1d2bbc3d77ab0d119c031ea74d8781c93285cf736abc422baec1eb1560e8ca"
 
 # Reference: https://minecraft.wiki/w/Ravager#Drops
-ravager_spawner:
-  entity: RAVAGER
+ravager:
   experience: 20
   loot:
     1:
@@ -902,12 +741,11 @@ ravager_spawner:
       amount: 1-1
       chance: 100.0
   mob_head:
-    item: "RAVAGER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "cd20bf52ec390a0799299184fc678bf84cf732bb1bd78fd1c4b441858f0235a8"
 
 # Reference: https://minecraft.wiki/w/Salmon#Drops
-salmon_spawner:
-  entity: SALMON
+salmon:
   experience: 1
   loot:
     1:
@@ -919,34 +757,27 @@ salmon_spawner:
       amount: 0-1
       chance: 5.0
   mob_head:
-    item: "SALMON_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "d4d001589b86c22cf24f1618fe7efef12932aa9148b5e4fc6ff4a614b990ae12"
 
 # Reference: https://minecraft.wiki/w/Sheep#Drops
-sheep_spawner:
-  entity: SHEEP
-  spawn_delay: "150s"
-  experience: 2
+sheep:
+  experience: 1
   loot:
     1:
       item: WHITE_WOOL
-      amount: 1-2
+      amount: 1-1
       chance: 100.0
     2:
       item: MUTTON
       amount: 1-2
       chance: 100.0
-    3:
-      item: STRING
-      amount: 0-1
-      chance: 20.0
   mob_head:
-    item: "SHEEP_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "a723893df4cfb9c7240fc47b560ccf6ddeb19da9183d33083f2c71f46dad290a"
 
 # Reference: https://minecraft.wiki/w/Shulker#Drops
-shulker_spawner:
-  entity: SHULKER
+shulker:
   experience: 5
   loot:
     1:
@@ -954,38 +785,39 @@ shulker_spawner:
       amount: 0-1
       chance: 50.0
   mob_head:
-    item: "SHULKER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "537a294f6b7b4ba437e5cb35fb20f46792e7ac0a490a66132a557124ec5f997a"
 
 # Reference: https://minecraft.wiki/w/Silverfish#Drops
-silverfish_spawner:
-  entity: SILVERFISH
+silverfish:
   experience: 5
   mob_head:
-    item: "SILVERFISH_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "bfe13237e1109cab7264dc53b0aa697cf9a7c62c984a269fb0755a288912bbca"
 
 # Reference: https://minecraft.wiki/w/Skeleton#Drops
-skeleton_spawner:
-  entity: SKELETON
-  spawn_delay: "120s"
-  experience: 1
+skeleton:
+  experience: 5
   loot:
     1:
       item: BONE
-      amount: 1-2
-      chance: 100.0
+      amount: 0-2
+      chance: 66.67
     2:
       item: ARROW
       amount: 0-2
-      chance: 100.0
+      chance: 66.67
+    3:
+      item: BOW
+      amount: 1-1
+      chance: 8.5
+      durability: 1-384
   mob_head:
-    item: "SKELETON_SPAWN_EGG"
+    item: "SKELETON_SKULL"
     hash_texture: null
 
 # Reference: https://minecraft.wiki/w/Skeleton_Horse#Drops
-skeleton_horse_spawner:
-  entity: SKELETON_HORSE
+skeleton_horse:
   experience: 3
   loot:
     1:
@@ -993,38 +825,30 @@ skeleton_horse_spawner:
       amount: 0-2
       chance: 66.67
   mob_head:
-    item: "SKELETON_HORSE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "ac7d8a16d3f0f98b598df93f2c2d34e75171cd52dbf4a1211d7b84c019416a40"
 
 # Reference: https://minecraft.wiki/w/Slime#Drops
-slime_spawner:
-  entity: SLIME
-  spawn_delay: "120s"
-  experience: 15
+slime:
+  experience: 4
   loot:
     1:
       item: SLIME_BALL
-      amount: 1-2
+      amount: 1-6
       chance: 100.0
-    2:
-      item: WHEAT_SEEDS
-      amount: 0-1
-      chance: 10.0
   mob_head:
-    item: "SLIME_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "c7d29dbf3d98213ec2fb0ca25da74779e57bd0c1234268f828a3ec9869e15a9c"
 
 # Reference: https://minecraft.wiki/w/Sniffer#Drops
-sniffer_spawner:
-  entity: SNIFFER
+sniffer:
   experience: 5
   mob_head:
-    item: "SNIFFER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "fe5a8341c478a134302981e6a7758ea4ecfd8d62a0df4067897e75502f9b25de"
 
 # Reference: https://minecraft.wiki/w/Snow_Golem#Drops
-snow_golem_spawner:
-  entity: SNOW_GOLEM
+snow_golem:
   experience: 0
   loot:
     1:
@@ -1032,34 +856,27 @@ snow_golem_spawner:
       amount: 0-15
       chance: 93.75
   mob_head:
-    item: "SNOW_GOLEM_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "1fdfd1f7538c040258be7a91446da89ed845cc5ef728eb5e690543378fcf4"
 
 # Reference: https://minecraft.wiki/w/Spider#Drops
-spider_spawner:
-  entity: SPIDER
-  spawn_delay: "100s"
-  experience: 1
+spider:
+  experience: 5
   loot:
     1:
       item: STRING
-      amount: 1-2
-      chance: 100.0
+      amount: 0-2
+      chance: 66.67
     2:
       item: SPIDER_EYE
       amount: 0-1
-      chance: 33.0
-    3:
-      item: COBWEB
-      amount: 0-1
-      chance: 5.0
+      chance: 33.33
   mob_head:
-    item: "SPIDER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "35e248da2e108f09813a6b848a0fcef111300978180eda41d3d1a7a8e4dba3c3"
 
 # Reference: https://minecraft.wiki/w/Squid#Drops
-squid_spawner:
-  entity: SQUID
+squid:
   experience: 3
   loot:
     1:
@@ -1067,12 +884,11 @@ squid_spawner:
       amount: 1-3
       chance: 100.0
   mob_head:
-    item: "SQUID_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "d8705624daa2956aa45956c81bab5f4fdb2c74a596051e24192039aea3a8b8"
 
 # Reference: https://minecraft.wiki/w/Stray#Drops
-stray_spawner:
-  entity: STRAY
+stray:
   experience: 5
   loot:
     1:
@@ -1093,12 +909,11 @@ stray_spawner:
       amount: 0-2
       chance: 50.0
   mob_head:
-    item: "STRAY_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "2c5097916bc0565d30601c0eebfeb287277a34e867b4ea43c63819d53e89ede7"
 
 # Reference: https://minecraft.wiki/w/Strider#Drops
-strider_spawner:
-  entity: STRIDER
+strider:
   experience: 3
   loot:
     1:
@@ -1106,28 +921,25 @@ strider_spawner:
       amount: 2-5
       chance: 100.0
   mob_head:
-    item: "STRIDER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "125851a86ee1c54c94fc5bed017823dfb3ba08eddbcab2a914ef45b596c1603"
 
 # Reference: https://minecraft.wiki/w/Sulfur_Cube#Drops
-sulfur_cube_spawner:
-  entity: SULFUR_CUBE
+sulfur_cube:
   experience: 2
   mob_head:
     item: "PLAYER_HEAD"
     hash_texture: "ca9570cd1dc43c1e83f36cc4995665513dc2405dad241d2114249e8da976fc3d"
 
 # Reference: https://minecraft.wiki/w/Tadpole#Drops
-tadpole_spawner:
-  entity: TADPOLE
+tadpole:
   experience: 0
   mob_head:
-    item: "TADPOLE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "987035f5352334c2cba6ac4c65c2b9059739d6d0e839c1dd98d75d2e77957847"
 
 # Reference: https://minecraft.wiki/w/Trader_Llama#Drops
-trader_llama_spawner:
-  entity: TRADER_LLAMA
+trader_llama:
   experience: 1
   loot:
     1:
@@ -1135,12 +947,11 @@ trader_llama_spawner:
       amount: 0-2
       chance: 66.67
   mob_head:
-    item: "TRADER_LLAMA_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "56307f42fc88ebc211e04ea2bb4d247b7428b711df9a4e0c6d1b921589e443a1"
 
 # Reference: https://minecraft.wiki/w/Tropical_Fish#Drops
-tropical_fish_spawner:
-  entity: TROPICAL_FISH
+tropical_fish:
   experience: 1
   loot:
     1:
@@ -1152,12 +963,11 @@ tropical_fish_spawner:
       amount: 0-1
       chance: 5.0
   mob_head:
-    item: "TROPICAL_FISH_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "d6dd5e6addb56acbc694ea4ba5923b1b25688178feffa72290299e2505c97281"
 
 # Reference: https://minecraft.wiki/w/Turtle#Drops
-turtle_spawner:
-  entity: TURTLE
+turtle:
   experience: 1
   loot:
     1:
@@ -1165,133 +975,97 @@ turtle_spawner:
       amount: 0-2
       chance: 66.67
   mob_head:
-    item: "TURTLE_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "0a4050e7aacc4539202658fdc339dd182d7e322f9fbcc4d5f99b5718a"
 
 # Reference: https://minecraft.wiki/w/Vex#Drops
-vex_spawner:
-  entity: VEX
+vex:
   experience: 3
   mob_head:
-    item: "VEX_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "b663134d7306bb604175d2575d686714b04412fe501143611fcf3cc19bd70abe"
 
 # Reference: https://minecraft.wiki/w/Villager#Drops
-villager_spawner:
-  entity: VILLAGER
-  spawn_delay: "210s"
+villager:
+  experience: 0
+  mob_head:
+    item: "PLAYER_HEAD"
+    hash_texture: "a36e9841794a37eb99524925668b47a62b5cb72e096a9f8f95e106804ae13e1b"
+
+# Reference: https://minecraft.wiki/w/Vindicator#Drops
+vindicator:
   experience: 5
   loot:
     1:
       item: EMERALD
       amount: 0-1
-      chance: 25.0
-    2:
-      item: BOOK
-      amount: 1-1
-      chance: 10.0
-    3:
-      item: BREAD
-      amount: 1-2
-      chance: 50.0
-  mob_head:
-    item: "VILLAGER_SPAWN_EGG"
-    hash_texture: null
-
-# Reference: https://minecraft.wiki/w/Vindicator#Drops
-vindicator_spawner:
-  entity: VINDICATOR
-  spawn_delay: "330s"
-  experience: 95
-  loot:
-    1:
-      item: EMERALD
-      amount: 1-2
       chance: 50.0
     2:
       item: IRON_AXE
       amount: 1-1
       chance: 8.5
-      durability: 1-64
-    3:
-      item: IRON_INGOT
-      amount: 1-1
-      chance: 15.0
+      durability: 1-250
   mob_head:
-    item: "VINDICATOR_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "4f6fb89d1c631bd7e79fe185ba1a6705425f5c31a5ff626521e395d4a6f7e2"
 
 # Reference: https://minecraft.wiki/w/Wandering_Trader#Drops
-wandering_trader_spawner:
-  entity: WANDERING_TRADER
+wandering_trader:
   experience: 0
   mob_head:
-    item: "WANDERING_TRADER_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "ee011aac817259f2b48da3e5ef266094703866608b3d7d1754432bf249cd2234"
 
 # Reference: https://minecraft.wiki/w/Warden#Drops
-warden_spawner:
-  entity: WARDEN
-  spawn_delay: "480s"
-  experience: 300
+warden:
+  experience: 5
   loot:
     1:
       item: SCULK_CATALYST
       amount: 1-1
       chance: 100.0
-    2:
-      item: ECHO_SHARD
-      amount: 1-2
-      chance: 1.0
-    3:
-      item: NETHERITE_SCRAP
-      amount: 0-1
-      chance: 1.0
   mob_head:
-    item: "WARDEN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "f8c211d66c803aac15ab86f79c7edfd6c3b2034d23355a92f6bd42e835260be0"
 
 # Reference: https://minecraft.wiki/w/Witch#Drops
-witch_spawner:
-  entity: WITCH
-  spawn_delay: "150s"
-  experience: 10
+witch:
+  experience: 5
   loot:
     1:
-      item: GLASS_BOTTLE
-      amount: 1-1
-      chance: 25.0
+      item: REDSTONE
+      amount: 4-8
+      chance: 100.0
     2:
       item: GLOWSTONE_DUST
-      amount: 1-2
-      chance: 20.0
+      amount: 0-6
+      chance: 17.87
     3:
-      item: REDSTONE
-      amount: 1-2
-      chance: 20.0
-    4:
-      item: GUNPOWDER
-      amount: 1-2
-      chance: 15.0
-    5:
       item: SUGAR
-      amount: 1-1
-      chance: 15.0
-    6:
+      amount: 0-6
+      chance: 17.87
+    4:
       item: SPIDER_EYE
-      amount: 1-1
-      chance: 15.0
+      amount: 0-6
+      chance: 17.87
+    5:
+      item: GLASS_BOTTLE
+      amount: 0-6
+      chance: 17.87
+    6:
+      item: GUNPOWDER
+      amount: 0-6
+      chance: 17.87
     7:
-      item: POTION
-      amount: 1-1
-      chance: 5.0
+      item: STICK
+      amount: 0-6
+      chance: 33.49
   mob_head:
-    item: "WITCH_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "8aa986a6e1c2d88ff198ab2c3259e8d2674cb83a6d206f883bad2c8ada819"
 
 # Reference: https://minecraft.wiki/w/Wither_Skeleton#Drops
-wither_skeleton_spawner:
-  entity: WITHER_SKELETON
+wither_skeleton:
   experience: 5
   loot:
     1:
@@ -1312,20 +1086,18 @@ wither_skeleton_spawner:
       chance: 8.5
       durability: 1-131
   mob_head:
-    item: "WITHER_SKELETON_SPAWN_EGG"
+    item: "WITHER_SKELETON_SKULL"
     hash_texture: null
 
 # Reference: https://minecraft.wiki/w/Wolf#Drops
-wolf_spawner:
-  entity: WOLF
+wolf:
   experience: 3
   mob_head:
-    item: "WOLF_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "8f0b221786f193c06dd19a7875a903635113f84523927bb69764237fe20703de"
 
 # Reference: https://minecraft.wiki/w/Zoglin#Drops
-zoglin_spawner:
-  entity: ZOGLIN
+zoglin:
   experience: 5
   loot:
     1:
@@ -1333,69 +1105,11 @@ zoglin_spawner:
       amount: 1-3
       chance: 100.0
   mob_head:
-    item: "ZOGLIN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "c19b7b5e9ffd4e22b890ab778b4795b662faff2b4978bf815574e48b0e52b301"
 
 # Reference: https://minecraft.wiki/w/Zombie#Drops
-zombie_spawner:
-  entity: ZOMBIE
-  spawn_delay: "120s"
-  experience: 1
-  loot:
-    1:
-      item: ROTTEN_FLESH
-      amount: 1-2
-      chance: 100.0
-    2:
-      item: IRON_INGOT
-      amount: 0-1
-      chance: 2.5
-    3:
-      item: CARROT
-      amount: 0-1
-      chance: 2.0
-    4:
-      item: POTATO
-      amount: 0-1
-      chance: 2.0
-    5:
-      item: IRON_SHOVEL
-      amount: 1-1
-      chance: 1.0
-      durability: 1-15
-  mob_head:
-    item: "ZOMBIE_SPAWN_EGG"
-    hash_texture: null
-
-# Reference: https://minecraft.wiki/w/Zombie_Horse#Drops
-zombie_horse_spawner:
-  entity: ZOMBIE_HORSE
-  experience: 3
-  loot:
-    1:
-      item: ROTTEN_FLESH
-      amount: 0-2
-      chance: 66.67
-  mob_head:
-    item: "ZOMBIE_HORSE_SPAWN_EGG"
-    hash_texture: null
-
-# Reference: https://minecraft.wiki/w/Zombie_Nautilus#Drops
-zombie_nautilus_spawner:
-  entity: ZOMBIE_NAUTILUS
-  experience: 3
-  loot:
-    1:
-      item: ROTTEN_FLESH
-      amount: 0-3
-      chance: 75.0
-  mob_head:
-    item: "ZOMBIE_NAUTILUS_SPAWN_EGG"
-    hash_texture: null
-
-# Reference: https://minecraft.wiki/w/Zombie_Villager#Drops
-zombie_villager_spawner:
-  entity: ZOMBIE_VILLAGER
+zombie:
   experience: 5
   loot:
     1:
@@ -1415,14 +1129,60 @@ zombie_villager_spawner:
       amount: 0-1
       chance: 0.83
   mob_head:
-    item: "ZOMBIE_VILLAGER_SPAWN_EGG"
+    item: "ZOMBIE_HEAD"
     hash_texture: null
 
+# Reference: https://minecraft.wiki/w/Zombie_Horse#Drops
+zombie_horse:
+  experience: 3
+  loot:
+    1:
+      item: ROTTEN_FLESH
+      amount: 0-2
+      chance: 66.67
+  mob_head:
+    item: "PLAYER_HEAD"
+    hash_texture: "171ce469cba4426c811f69be5d958a09bfb9b1b2bb649d3577a0c2161ad2f524"
+
+# Reference: https://minecraft.wiki/w/Zombie_Nautilus#Drops
+zombie_nautilus:
+  experience: 3
+  loot:
+    1:
+      item: ROTTEN_FLESH
+      amount: 0-3
+      chance: 75.0
+  mob_head:
+    item: "PLAYER_HEAD"
+    hash_texture: "fd9a933376da44c3391307cb9f4cf03f16f3a54f495fd5a11bad8a373f9d5720"
+
+# Reference: https://minecraft.wiki/w/Zombie_Villager#Drops
+zombie_villager:
+  experience: 5
+  loot:
+    1:
+      item: ROTTEN_FLESH
+      amount: 0-2
+      chance: 66.67
+    2:
+      item: IRON_INGOT
+      amount: 0-1
+      chance: 0.83
+    3:
+      item: CARROT
+      amount: 0-1
+      chance: 0.83
+    4:
+      item: POTATO
+      amount: 0-1
+      chance: 0.83
+  mob_head:
+    item: "PLAYER_HEAD"
+    hash_texture: "37e838ccc26776a217c678386f6a65791fe8cdab8ce9ca4ac6b28397a4d81c22"
+
 # Reference: https://minecraft.wiki/w/Zombified_Piglin#Drops
-zombified_piglin_spawner:
-  entity: ZOMBIFIED_PIGLIN
-  spawn_delay: "180s"
-  experience: 12
+zombified_piglin:
+  experience: 5
   loot:
     1:
       item: GOLD_NUGGET
@@ -1442,53 +1202,16 @@ zombified_piglin_spawner:
       chance: 8.5
       durability: 1-32
   mob_head:
-    item: "ZOMBIFIED_PIGLIN_SPAWN_EGG"
-    hash_texture: null
+    item: "PLAYER_HEAD"
+    hash_texture: "e935842af769380f78e8b8a88d1ea6ca2807c1e5693c2cf797456620833e936f"
 
-# Reference: Custom Wither Spawner
-wither_spawner:
-  entity: WITHER
-  spawn_delay: "540s"
-  experience: 540
-  loot:
-    1:
-      item: NETHER_STAR
-      amount: 1-1
-      chance: 0.01
-    2:
-      item: WITHER_SKELETON_SKULL
-      amount: 1-1
-      chance: 1.0
-    3:
-      item: COAL
-      amount: 3-8
-      chance: 60.0
-  mob_head:
-    item: "WITHER_SPAWN_EGG"
-    hash_texture: null
-
-# Reference: Custom Ender Dragon Spawner
-ender_dragon_spawner:
-  entity: ENDER_DRAGON
-  spawn_delay: "600s"
-  experience: 800
-  loot:
-    1:
-      item: DRAGON_EGG
-      amount: 1-1
-      chance: 0.01
-    2:
-      item: DRAGON_BREATH
-      amount: 1-3
-      chance: 10.0
-    3:
-      item: ELYTRA
-      amount: 1-1
-      chance: 0.0001
-    4:
-      item: DRAGON_HEAD
-      amount: 1-1
-      chance: 0.5
-  mob_head:
-    item: "ENDER_DRAGON_SPAWN_EGG"
-    hash_texture: null
+# Extra spawners for a mob, each with its own loot. Anything left out except loot comes from that mob's spawner.
+custom_spawners:
+#  lucky_zombie:
+#    entity: ZOMBIE
+#    display_name: Lucky Zombie
+#    loot:
+#      1:
+#        item: DIAMOND
+#        amount: 1-2
+#        chance: 5.0
