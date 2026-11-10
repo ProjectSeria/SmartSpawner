@@ -329,6 +329,17 @@ public class LanguageManager {
         commandGuiLanguage.clearCache();
     }
 
+    /** Adds a text post-processor and rebuilds cached strings so it takes effect immediately. */
+    public void addTextPostProcessor(github.nighter.smartspawner.api.text.TextPostProcessor processor) {
+        placeholderFormatter.addPostProcessor(processor);
+        clearCache();
+    }
+
+    public void removeTextPostProcessor(github.nighter.smartspawner.api.text.TextPostProcessor processor) {
+        placeholderFormatter.removePostProcessor(processor);
+        clearCache();
+    }
+
     public String applyPlaceholdersAndColors(String text, Map<String, String> placeholders) {
         return placeholderFormatter.apply(text, placeholders);
     }

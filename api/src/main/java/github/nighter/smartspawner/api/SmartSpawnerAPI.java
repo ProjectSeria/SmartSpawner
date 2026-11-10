@@ -4,6 +4,7 @@ import github.nighter.smartspawner.api.data.SpawnerDataDTO;
 import github.nighter.smartspawner.api.data.SpawnerDataModifier;
 import github.nighter.smartspawner.api.gui.GuiLayoutRegistry;
 import github.nighter.smartspawner.api.gui.SpawnerGuiLayoutProvider;
+import github.nighter.smartspawner.api.text.TextPostProcessor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -184,4 +185,22 @@ public interface SmartSpawnerAPI {
      * Clears the currently active per-spawner layout provider.
      */
     void clearSpawnerLayoutProvider();
+
+    /**
+     * Registers a {@link TextPostProcessor} that rewrites every language string (GUI titles, item names,
+     * lore, messages) before colour codes are translated. Processors run in registration order.
+     * Registering the same instance twice has no effect. The language cache is cleared so already cached
+     * strings are rebuilt with the new processor.
+     *
+     * @param processor the processor to add
+     */
+    void registerTextPostProcessor(TextPostProcessor processor);
+
+    /**
+     * Removes a processor added with {@link #registerTextPostProcessor(TextPostProcessor)} and clears the
+     * language cache. Does nothing if the processor is not registered.
+     *
+     * @param processor the processor to remove
+     */
+    void unregisterTextPostProcessor(TextPostProcessor processor);
 }

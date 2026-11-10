@@ -1,17 +1,23 @@
 package github.nighter.smartspawner.language.format;
 
+import github.nighter.smartspawner.api.text.TextPostProcessor;
 import github.nighter.smartspawner.language.cache.LanguageCache;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public final class PlaceholderFormatter {
     private final LanguageCache cache;
     private final AtomicInteger cacheHits;
     private final AtomicInteger cacheMisses;
+    private final List<TextPostProcessor> postProcessors = new CopyOnWriteArrayList<>();
+    private final java.util.Set<TextPostProcessor> failedProcessors = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
     public PlaceholderFormatter(LanguageCache cache, AtomicInteger cacheHits, AtomicInteger cacheMisses) {
         this.cache = cache;
@@ -32,7 +38,7 @@ public final class PlaceholderFormatter {
         }
 
         cacheMisses.incrementAndGet();
-        String result = replacePlaceholders(text, placeholders);
+        String result = postProcess(replacePlaceholders(text, placeholders));
         result = ColorUtil.translateHexColorCodes(result);
         cache.putCachedString(key, result);
         return result;
@@ -51,8 +57,45 @@ public final class PlaceholderFormatter {
         }
 
         cacheMisses.incrementAndGet();
-        String result = replacePlaceholders(text, placeholders);
+        String result = postProcess(replacePlaceholders(text, placeholders));
         cache.putCachedString(key, result);
+        return result;
+    }
+
+    public void addPostProcessor(TextPostProcessor processor) {
+        if (processor != null && !postProcessors.contains(processor)) {
+            postProcessors.add(processor);
+        }
+    }
+
+    public void removePostProcessor(TextPostProcessor processor) {
+        postProcessors.remove(processor);
+        failedProcessors.remove(processor);
+    }
+
+    /**
+     * Runs the registered {@link TextPostProcessor}s over a string whose placeholders are already substituted.
+     * A failing processor is skipped (its input is passed on unchanged) and logged once.
+     */
+    private String postProcess(String text) {
+        if (postProcessors.isEmpty() || text == null || text.isEmpty()) {
+            return text;
+        }
+        String result = text;
+        for (TextPostProcessor processor : postProcessors) {
+            try {
+                String processed = processor.process(result);
+                if (processed != null) {
+                    result = processed;
+                }
+            } catch (Throwable t) {
+                if (failedProcessors.add(processor)) {
+                    Logger.getLogger("SmartSpawner").log(Level.WARNING,
+                            "Text post-processor " + processor.getClass().getName()
+                                    + " threw an exception; the unmodified text is used (further failures are not logged)", t);
+                }
+            }
+        }
         return result;
     }
 
@@ -96,9 +139,9 @@ public final class PlaceholderFormatter {
         String[] valueLines = multilineValue.split("\n");
         String lineStart = processedLine.substring(0, processedLine.indexOf(placeholder));
 
-        result.add(ColorUtil.translateHexColorCodes(processedLine.replace(placeholder, valueLines[0])));
+        result.add(ColorUtil.translateHexColorCodes(postProcess(processedLine.replace(placeholder, valueLines[0]))));
         for (int i = 1; i < valueLines.length; i++) {
-            result.add(ColorUtil.translateHexColorCodes(lineStart + valueLines[i]));
+            result.add(ColorUtil.translateHexColorCodes(postProcess(lineStart + valueLines[i])));
         }
         return result;
     }

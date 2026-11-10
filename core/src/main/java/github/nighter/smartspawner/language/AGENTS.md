@@ -70,6 +70,7 @@ Consequences:
 - `format/ColorUtil` handles legacy `&` codes, section signs, and `&#RRGGBB` hex.
 - `format/PlaceholderFormatter` does `%placeholder%` substitution. Placeholder maps are `Map<String, String>`; pass `Collections.emptyMap()` rather than a fresh `HashMap` (`MessageService` keeps a shared `EMPTY_PLACEHOLDERS` for this).
 - `format/NumberFormatter` produces the compact number strings shown in GUIs. Never `String.valueOf` a number into player-facing text; locales differ.
+- `PlaceholderFormatter` runs the registered `api/text/TextPostProcessor`s after `{placeholder}` substitution and before `ColorUtil`, in `apply`, `applyOnlyPlaceholders` and `processMultilinePlaceholders`. Output must be legacy colour codes, not MiniMessage. Registering or removing one goes through `LanguageManager.add/removeTextPostProcessor`, which clears the cache (results are cached by input).
 - `format/SmallCapsFormatter` provides the small-caps styling some layouts use.
 - `LanguageComponentFormatter` plus the `Component`-returning methods (`buildItemLoreAsComponents`, `translatableLootLine`) are the Adventure path, used where client-side translation of vanilla item names matters. Prefer these for item lore over raw strings.
 

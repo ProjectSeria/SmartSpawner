@@ -4,6 +4,9 @@ All notable changes to SmartSpawner are documented in this file.
 
 ## Unreleased
 
+### Added
+- API: `SmartSpawnerAPI#registerTextPostProcessor` / `unregisterTextPostProcessor` take a `TextPostProcessor` that rewrites every language string (GUI titles, item names, lore, messages) after `{placeholders}` are filled and before colour codes are translated. Addons can expand their own tags in language files without editing them. Results are cached, so processors must not depend on the player or on time.
+
 ### Fixed
 - Changing `spawner_properties.default.delay` now applies to spawners already placed, after `/ss reload` or a restart. Before, they kept the old delay until broken and placed again.
 

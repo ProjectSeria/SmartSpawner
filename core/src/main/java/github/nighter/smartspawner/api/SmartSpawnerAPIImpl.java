@@ -7,6 +7,7 @@ import github.nighter.smartspawner.api.gui.GuiLayoutRegistry;
 import github.nighter.smartspawner.api.gui.GuiLayoutRegistryImpl;
 import github.nighter.smartspawner.api.gui.SpawnerGuiLayoutProvider;
 import github.nighter.smartspawner.api.impl.SpawnerDataModifierImpl;
+import github.nighter.smartspawner.api.text.TextPostProcessor;
 import github.nighter.smartspawner.spawner.data.SpawnerManager;
 import github.nighter.smartspawner.spawner.interactions.destroy.SpawnerRemovalService;
 import github.nighter.smartspawner.spawner.item.SpawnerItemFactory;
@@ -268,5 +269,17 @@ public class SmartSpawnerAPIImpl implements SmartSpawnerAPI {
                 spawnerData.getBaseMaxStoredExp(),
                 spawnerData.getSpawnDelay()
         );
+    }
+
+    @Override
+    public void registerTextPostProcessor(TextPostProcessor processor) {
+        if (processor == null) return;
+        plugin.getLanguageManager().addTextPostProcessor(processor);
+    }
+
+    @Override
+    public void unregisterTextPostProcessor(TextPostProcessor processor) {
+        if (processor == null) return;
+        plugin.getLanguageManager().removeTextPostProcessor(processor);
     }
 }
