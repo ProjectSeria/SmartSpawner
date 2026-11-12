@@ -9,11 +9,14 @@ import org.bukkit.Material;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class LanguageComponentFormatter {
     private static final Pattern HEX_TEMPLATE_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
+    private static final Pattern TRANSLATED_HEX_PATTERN =
+            Pattern.compile("§[xX](?:§[A-Fa-f0-9]){6}");
     private static final Map<Character, TextColor> LEGACY_COLOR_MAP;
 
     static {
@@ -44,12 +47,40 @@ public final class LanguageComponentFormatter {
         return translatableLootLine(template, Component.translatable(material.translationKey()), amount, chance);
     }
 
+    public static Component translatableLootLine(
+            String template,
+            Material material,
+            String amount,
+            String chance,
+            UnaryOperator<String> templateFormatter
+    ) {
+        return translatableLootLine(template, Component.translatable(material.translationKey()), amount, chance, templateFormatter);
+    }
+
     /**
      * Same as the material overload, but the item name is supplied as a ready component. This is how a
      * caller passes an item's effective name (for example a tipped arrow's potion-specific name) instead
      * of the plain material translation, so the loot line reads the way the item does in an inventory.
      */
     public static Component translatableLootLine(String template, Component itemName, String amount, String chance) {
+        return translatableLootLine(template, itemName, amount, chance, UnaryOperator.identity());
+    }
+
+    /**
+     * As above, but the raw template first goes through {@code templateFormatter}. Callers pass the language
+     * formatter here so registered text post-processors (for example SeriaPrefix {@code <sc:...>} tags) are
+     * resolved in loot lines the same way they are in every other lore line.
+     */
+    public static Component translatableLootLine(
+            String template,
+            Component itemName,
+            String amount,
+            String chance,
+            UnaryOperator<String> templateFormatter
+    ) {
+        if (template != null) {
+            template = templateFormatter.apply(template);
+        }
         if (template == null) {
             return noItalic(Component.text(amount + " ")
                     .append(itemName)
@@ -155,6 +186,16 @@ public final class LanguageComponentFormatter {
             if (matcher.start() > lastPosition) {
                 lastPosition = matcher.start();
                 last = TextColor.color(Integer.parseInt(matcher.group(1), 16));
+            }
+        }
+
+        // Already-translated hex colours (section sign + x + six section-sign digits), which is what the
+        // language formatter produces after post-processing.
+        Matcher translated = TRANSLATED_HEX_PATTERN.matcher(text);
+        while (translated.find()) {
+            if (translated.start() > lastPosition) {
+                lastPosition = translated.start();
+                last = TextColor.color(Integer.parseInt(translated.group().replaceAll("[§&xX]", ""), 16));
             }
         }
 

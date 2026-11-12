@@ -130,8 +130,14 @@ public final class ItemLanguageSection {
                 locale().items().getString(templateKey),
                 material,
                 amount,
-                chance
+                chance,
+                this::formatTemplate
         );
+    }
+
+    /** Runs a placeholder-free template through the language formatter so post-processors (e.g. SeriaPrefix tags) apply. */
+    private String formatTemplate(String template) {
+        return formatter.apply(template, EMPTY_PLACEHOLDERS);
     }
 
     public Component translatableLootLine(String templateKey, Component itemName, String amount, String chance) {
@@ -139,7 +145,8 @@ public final class ItemLanguageSection {
                 locale().items().getString(templateKey),
                 itemName,
                 amount,
-                chance
+                chance,
+                this::formatTemplate
         );
     }
 
@@ -154,7 +161,7 @@ public final class ItemLanguageSection {
         return LanguageComponentFormatter.loreComponents(
                 locale().items().getStringList(key),
                 line -> formatter.apply(line, placeholders),
-                () -> locale().items().getString(emptyLootKey, ""),
+                () -> formatTemplate(locale().items().getString(emptyLootKey, "")),
                 lootItemComponents
         );
     }

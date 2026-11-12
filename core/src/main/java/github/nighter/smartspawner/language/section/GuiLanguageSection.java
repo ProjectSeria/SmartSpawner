@@ -158,11 +158,18 @@ public final class GuiLanguageSection {
     }
 
     public Component translatableLootLine(String templateKey, Material material, String amount, String chance) {
-        return LanguageComponentFormatter.translatableLootLine(config().getString(templateKey), material, amount, chance);
+        return LanguageComponentFormatter.translatableLootLine(
+                config().getString(templateKey), material, amount, chance, this::formatTemplate);
     }
 
     public Component translatableLootLine(String templateKey, Component itemName, String amount, String chance) {
-        return LanguageComponentFormatter.translatableLootLine(config().getString(templateKey), itemName, amount, chance);
+        return LanguageComponentFormatter.translatableLootLine(
+                config().getString(templateKey), itemName, amount, chance, this::formatTemplate);
+    }
+
+    /** Runs a placeholder-free template through the language formatter so post-processors (e.g. SeriaPrefix tags) apply. */
+    private String formatTemplate(String template) {
+        return formatter.apply(template, Collections.emptyMap());
     }
 
     /**
@@ -192,7 +199,7 @@ public final class GuiLanguageSection {
         return LanguageComponentFormatter.loreComponents(
                 config().getStringList(key),
                 line -> formatter.apply(line, placeholders),
-                () -> config().getString(emptyLootKey, ""),
+                () -> formatTemplate(config().getString(emptyLootKey, "")),
                 lootItemComponents
         );
     }
