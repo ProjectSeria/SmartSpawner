@@ -26,7 +26,6 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class SpawnerMenuUI {
-    private static final int INVENTORY_SIZE = 27;
     private static final int TICKS_PER_SECOND = 20;
     private static final Map<String, String> EMPTY_PLACEHOLDERS = Collections.emptyMap();
 
@@ -117,7 +116,7 @@ public class SpawnerMenuUI {
         // Populate menu items from the layout. A button's item is chosen by its identity
         // (the info_button flag, or a recognized action), not by requiring an action: an
         // enabled button with a valid key always appears, even with no action at all.
-        ItemStack[] items = new ItemStack[INVENTORY_SIZE];
+        ItemStack[] items = new ItemStack[layout.getSize()];
 
         for (GuiButton button : layout.getAllButtons().values()) {
             if (!button.isEnabled()) {
@@ -203,7 +202,7 @@ public class SpawnerMenuUI {
             title = languageManager.getGuiTitle("gui_title_main.single_spawner", placeholders);
         }
 
-        return Bukkit.createInventory(new SpawnerMenuHolder(spawner, layout), INVENTORY_SIZE, title);
+        return Bukkit.createInventory(new SpawnerMenuHolder(spawner, layout), layout.getSize(), title);
     }
 
     public ItemStack createLootStorageItem(SpawnerData spawner, GuiButton button) {
@@ -579,9 +578,9 @@ public class SpawnerMenuUI {
         } else {
             item = new ItemStack(button.getMaterial());
         }
-        if (item.getType() == Material.SPAWNER) {
-            ItemTooltipUtil.hideTooltip(item);
-        }
+        // Display-only buttons (e.g. glass pane borders) carry no text, so hide the tooltip entirely
+        // instead of showing the vanilla material name.
+        ItemTooltipUtil.hideTooltip(item);
         return item;
     }
 

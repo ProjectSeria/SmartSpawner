@@ -9,6 +9,18 @@ public class GuiLayout {
     private final Map<String, GuiButton> buttons = new HashMap<>();
     private final Map<Integer, String> slotToButtonType = new HashMap<>();
 
+    /** Inventory size in slots. Only the main GUI reads it; defaults to three rows. */
+    public static final int DEFAULT_SIZE = 27;
+    private int size = DEFAULT_SIZE;
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
     public void addButton(String buttonType, GuiButton button) {
         // Remove old button if it exists
         GuiButton oldButton = buttons.get(buttonType);

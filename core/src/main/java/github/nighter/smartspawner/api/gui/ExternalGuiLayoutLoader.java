@@ -69,6 +69,9 @@ public class ExternalGuiLayoutLoader {
      */
     public GuiLayout loadLayout(FileConfiguration config, String layoutType) {
         GuiLayout layout = new GuiLayout();
+        if ("main".equals(layoutType)) {
+            layout.setSize(parseMainSize(config.getInt("size", MAIN_GUI_SIZE)));
+        }
 
         Set<String> buttonKeys = config.getKeys(false);
         if (buttonKeys.isEmpty()) {
@@ -116,7 +119,7 @@ public class ExternalGuiLayoutLoader {
         parseLegacyButtonSounds(
                 config, buttonKey, clickSounds, successSounds, failSounds);
 
-        if (!isValidSlot(slot, layoutType)) {
+        if (!isValidSlot(slot, layoutType, layout.getSize())) {
             if (logger != null) {
                 logger.warning(String.format("Invalid slot %d for button %s in %s layout", slot, buttonKey, layoutType));
             }
@@ -349,8 +352,20 @@ public class ExternalGuiLayoutLoader {
         }
     }
 
-    private boolean isValidSlot(int slot, String layoutType) {
-        return slot >= getMinSlot(layoutType) && slot <= getMaxSlot(layoutType);
+    private boolean isValidSlot(int slot, String layoutType, int mainSize) {
+        int max = "main".equals(layoutType) ? mainSize : getMaxSlot(layoutType);
+        return slot >= getMinSlot(layoutType) && slot <= max;
+    }
+
+    /** The main GUI size must be a whole number of rows (9-54 slots); anything else falls back to the default. */
+    private int parseMainSize(int size) {
+        if (size < 9 || size > 54 || size % 9 != 0) {
+            if (logger != null) {
+                logger.warning("Invalid main GUI size " + size + " (must be 9, 18, 27, 36, 45 or 54). Using " + MAIN_GUI_SIZE + ".");
+            }
+            return MAIN_GUI_SIZE;
+        }
+        return size;
     }
 
     private int getMinSlot(String layoutType) {
